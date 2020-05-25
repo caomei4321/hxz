@@ -5,13 +5,45 @@ namespace App\Http\Controllers\Api;
 use App\Models\Repair;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class RepairsController extends Controller
 {
     public function thisUser(Request  $request)
     {
-        return $request->user();
+
+        return Auth::guard('api')->user();
+    }
+
+    public function count()
+    {
+        $user = Auth::guard('api')->user();
+
+        // 未完结日常任务
+        $dailyTaskCount = $user->dailyTask()->where('status', 1)->count();
+
+        // 未完成专项任务
+        $specialTaskCount = $user->commonTask()->where([
+                                    ['status', 1],
+                                    ['category', '专项任务']])
+                                ->wherePivot('up_at',null)
+                                ->count();
+        // 未完成临时任务
+        $temporaryTaskCount = $user->commonTask()->where([
+                                        ['status', 1],
+                                        ['category', '临时任务']])
+                                    ->wherePivot('up_at',null)
+                                    ->count();
+
+        $messageCount = $user->message()->wherePivot('status',0)->count();
+
+        return $this->message([
+            'dailyTaskCount' => $dailyTaskCount,
+            'specialTaskCount' => $specialTaskCount,
+            'temporaryTaskCount' => $temporaryTaskCount,
+            'messageCount' => $messageCount
+        ]);
     }
 
     public function repairs(Repair $repair)

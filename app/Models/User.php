@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password', 'age', 'position', 'responsible_area', 'resident_institution', 'open_id', 'weixin_session_key', 'entity_name', 'reg_id'
+        'name', 'phone', 'password', 'age', 'open_id', 'weixin_session_key', 'category_id', 'integral'
     ];
 
     /**
@@ -44,23 +44,35 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function situation()
+    public function category()
     {
-        return $this->belongsToMany('App\Models\Matter', 'user_has_matters', 'user_id', 'matter_id')->withPivot('see_image', 'see_images', 'information', 'status');
+        return $this->belongsTo(UserCategory::class);
     }
 
-    public function patrolMatters()
+    public function dailyTask()
     {
-        return $this->hasMany(PatrolMatter::class);
+        return $this->belongsToMany(DailyTask::class,'user_has_daily_tasks','user_id','daily_id');
     }
 
-    public function patrols()
+    public function dailyProcess()
     {
-        return $this->hasMany(Patrol::class);
+        return $this->hasMany(DailyProcess::class);
     }
 
-    public function alarm()
+    public function commonTask()
     {
-        return $this->belongsToMany('App\Models\Alarm', 'alarm_users', 'user_id', 'alarm_id')->withPivot('see_image', 'information', 'status');
+        return $this->belongsToMany(CommonTask::class,'user_has_common_tasks','user_id','common_id')
+                    ->withPivot('address', 'description', 'photo', 'up_at')
+                    ->withTimestamps();
+    }
+
+    public function message()
+    {
+        return $this->belongsToMany(Message::class,'user_has_messages','user_id','message_id')->withPivot('status');
+    }
+
+    public function event()
+    {
+        return $this->hasMany(Event::class);
     }
 }

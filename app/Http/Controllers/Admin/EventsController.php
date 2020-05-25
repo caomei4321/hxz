@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Models\Event;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class EventsController extends Controller
+{
+    public function index(Event $event) {
+        $events = $event->paginate(15);
+        return view('admin.event.index', compact('events'));
+    }
+
+    public function destroy(Event $event)
+    {
+        $event->delete();
+
+        return response()->json([
+            'status'=> 200,
+            'message' => '删除成功'
+        ]);
+    }
+}

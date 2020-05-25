@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>基本 <small>分类，查找</small></h5>
+                    <h5>人员信息</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -32,18 +32,15 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="{{ route('admin.users.create') }}"><button class="btn btn-info " type="button"><i class="fa fa-paste"></i> 添加人员</button>
-                    </a>
-                    <a href="{{ route('admin.users.export') }}"><button class="btn btn-info " type="button"><i class="fa fa-paste"></i> 人员信息报表生成</button>
-                    </a>
+                    <button class="btn btn-info " id="add_user" type="button"><i class="fa fa-paste"></i> 添加人员</button>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
                             <th>ID</th>
                             <th>姓名</th>
                             <th>手机号</th>
-                            <th>责任网络</th>
-                            <th>设备名</th>
+                            <th>角色</th>
+                            <th>积分</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -54,12 +51,12 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->phone }}</td>
-                                <td>{{ $user->responsible_area }}</td>
-                                <td>{{ $user->entity_name }}</td>
+                                <td>{{ $user->category->name }}</td>
+                                <td>{{ $user->integral }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.users.edit',['user' => $user->id]) }}"><button type="button" class="btn btn-primary btn-xs">编辑</button></a>
-                                    <a href="{{ route('admin.users.show',['user' => $user->id]) }}"><button type="button" class="btn btn-danger btn-xs">查看</button></a>
+                                    <a href="#"><button type="button" class="btn btn-primary btn-xs edit" data-id="{{ $user->id }}">编辑</button></a>
+                                    {{--<a href=""><button type="button" class="btn btn-danger btn-xs">查看</button></a>--}}
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $user->id }}">删除</button>
                                 </td>
                             </tr>
@@ -70,8 +67,8 @@
                             <th>ID</th>
                             <th>姓名</th>
                             <th>手机号</th>
-                            <th>责任网络</th>
-                            <th>设备名</th>
+                            <th>角色</th>
+                            <th>积分</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -91,6 +88,7 @@
 
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/layer/layer.js') }}"></script>
 @endsection
 
 @section('javascript')
@@ -110,17 +108,37 @@
                 $.ajaxSetup({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type:"delete",
-                    url: '/admin/user/'+id,
+                    url: '/admin/users/'+id,
                     success:function (res) {
-                        if (res.status == 1){
-                            swal(res.msg, "您已经永久删除了这条信息。", "success");
+                        if (res.status == 200){
+                            swal(res.message, "您已经永久删除了这条信息。", "success");
                             location.reload();
                         }else {
-                            swal(res.msg, "请稍后重试。", "waring");
+                            swal(res.message, "请稍后重试。", "waring");
                         }
                     },
                 });
                 $.ajax();
+            });
+        });
+        $('#add_user').click(function () {
+            layer.open({
+                type: 2,
+                area: ['700px', '450px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: "{{ route('admin.user.create') }}"
+            });
+        });
+
+        $('.edit').click(function () {
+            var id = $(this).data('id');
+            layer.open({
+                type: 2,
+                area: ['700px', '450px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: "users/"+id+"/edit"
             });
         });
     </script>

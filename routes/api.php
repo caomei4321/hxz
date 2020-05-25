@@ -39,7 +39,30 @@ $api->version('v1', [
 
     //$api->post('wuthorizations', 'AuthorizationsController@weappStore');
     $api->get('categories', 'CategoryController@categories');  //责任清单分类
-    $api->group(['middleware' => 'auth:api'], function ($api) {
+    $api->group(['middleware' => 'refresh.token'], function ($api) {
+        $api->get('count', 'RepairsController@count');
+        // 日常任务列表
+        $api->get('dailyTasks', 'DailyTaskController@index');
+        // 日常任务上报
+        $api->post('dailyTasks', 'DailyTaskController@store');
+        // 专项任务列表
+        $api->get('specialTasks', 'CommonTaskController@specialTasks');
+        // 临时任务列表
+        $api->get('temporaryTasks', 'CommonTaskController@temporaryTasks');
+        // 专项和临时任务上报
+        $api->post('commonTasks', 'CommonTaskController@store');
+        // 上报事件
+        $api->post('uploadEvent', 'UploadEventController@eventStore');
+        // 消息列表
+        $api->get('messages/list', 'MessageController@messageList');
+        // 读取消息
+        $api->get('messages/read', 'MessageController@readMessage');
+        // 已完成任务
+        $api->get('complete/list', 'UserController@completeList');
+        // 未完成任务
+        $api->get('undone/list', 'UserController@undoneList');
+        // 上报记录
+        $api->get('uploadEvent/list', 'UserController@uploadEvent');
 
         $api->get('user', 'RepairsController@thisUser');
 

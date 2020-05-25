@@ -5,8 +5,8 @@ use App\Models\User;
 
 class UserObserver
 {
-    public function deleting(User $user)
+    /*public function deleting(User $user)
     {
         $user->patrols()->delete();
-    }
+    }*/
 }

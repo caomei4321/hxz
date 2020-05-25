@@ -65,12 +65,48 @@ class AuthorizationsController extends Controller
         ]);
     }
 
+    public function weappStore(Request $request,User $user)
+    {
+        $code = $request->code;
+        $credentials['phone'] = $request->phone;
+        $credentials['password'] = $request->password;
+
+        if (!Auth::guard('api')->once($credentials)) {
+            return $this->response->errorUnauthorized('用户名或密码错误');
+        }
+
+        //根据 code 获取微信 openid 和 session_key
+        /*$miniProgram = \EasyWeChat::miniProgram();
+        $data = $miniProgram->auth->session($code);
+
+        if (isset($data['errcode'])) {
+            return $this->response->errorUnauthorized('code 不正确');
+        }
+
+        $attributes['weixin_session_key'] = $data['session_key'];
+        $attributes['open_id'] = $data['openid'];*/
+
+        $user = Auth::guard('api')->getUser();
+
+        //$user->update($attributes); // 更新用户信息
+
+        $token = Auth::guard('api')->fromUser($user);
+
+        return $this->success([
+            'access_token' => $token,   //token值
+            'token_type' => 'Bearer',   //token类型
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,   //token过期时间
+            'user' => $user
+        ]);
+
+    }
+
     /*
      * 小程序登录
      *
      * 没有此微信用户时创建一个用户
      * */
-    public function weappStore(Request $request, ProgramUser $programUser)
+    /*public function weappStore(Request $request, ProgramUser $programUser)
     {
         $code = $request->code;
 
@@ -84,8 +120,8 @@ class AuthorizationsController extends Controller
 
         $attributes['weixin_session_key'] = $data['session_key'];
         $attributes['open_id'] = $data['openid'];
-        $attributes['nickname'] = $request->nickname;
-        $attributes['avatarurl'] = $request->avatarurl;
+        //$attributes['nickname'] = $request->nickname;
+        //$attributes['avatarurl'] = $request->avatarurl;
 
         $user = ProgramUser::where('open_id', $attributes['open_id'])->first();
 
@@ -102,7 +138,7 @@ class AuthorizationsController extends Controller
 
             return $this->responseWithToken($token)->setStatusCode(201);
         }
-    }
+    }*/
 
     /*
      * 修改密码
