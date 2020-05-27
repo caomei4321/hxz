@@ -69,6 +69,15 @@ Route::group(['prefix' => 'admin'], function () {
                     'show' => 'admin.userCategory.show',
                     'destroy' => 'admin.userCategory.destroy'
                 ]);
+                Route::resource('departments', 'Admin\DepartmentsController')->names([
+                    'index' => 'admin.department.index',
+                    'create' => 'admin.department.create',
+                    'edit' => 'admin.department.edit',
+                    'update' => 'admin.department.update',
+                    'store' => 'admin.department.store',
+                    'show' => 'admin.department.show',
+                    'destroy' => 'admin.department.destroy'
+                ]);
 
                 // 通知消息
                 Route::resource('messages', 'Admin\MessagesController', ['except' => ['edit', 'update']])->names([
@@ -87,6 +96,22 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.dailyTask.destroy',
                     'create' => 'admin.dailyTask.create'
                 ]);
+                // 日常处理记录
+                /*Route::resource('dailyProcesses', 'Admin\DailyProcessesController')->names([
+                    'index' => 'admin.dailyProcess.index',
+                    'create' => 'admin.dailyProcess.create',
+                    'edit' => 'admin.dailyProcess.edit',
+                    'update' => 'admin.dailyProcess.update',
+                    'store' => 'admin.dailyProcess.store',
+                    'show' => 'admin.dailyProcess.show',
+                    'destroy' => 'admin.dailyProcess.destroy'
+                ]);*/
+                Route::any('dailyProcesses', 'Admin\DailyProcessesController@index')->name('admin.dailyProcess.index');
+                Route::get('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@show')->name('admin.dailyProcess.show');
+                Route::delete('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@destroy')->name('admin.dailyProcess.destroy');
+                Route::any('commonProcesses', 'Admin\CommonProcessesController@index')->name('admin.commonProcess.index');
+                Route::get('commonProcesses/{commonProcess}', 'Admin\CommonProcessesController@show')->name('admin.commonProcess.show');
+                Route::delete('commonProcesses/{commonProcess}', 'Admin\CommonProcessesController@destroy')->name('admin.commonProcess.destroy');
 
                 // 其他任务
                 Route::resource('commonTasks', 'Admin\CommonTasksController', ['except' => ['edit', 'update']])->names([

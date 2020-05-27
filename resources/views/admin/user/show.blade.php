@@ -46,24 +46,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">职务</label>
+                                <label class="col-sm-2 control-label">类别</label>
 
                                 <div class="col-sm-10">
-                                    <p class="form-control-static">{{ $user->position }}</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">责任区域</label>
-
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{ $user->responsible_area }}</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">派驻机构</label>
-
-                                <div class="col-sm-10">
-                                    <p class="form-control-static">{{ $user->resident_institution }}</p>
+                                    <p class="form-control-static">{{ $user->category->name }}</p>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>

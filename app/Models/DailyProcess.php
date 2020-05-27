@@ -18,6 +18,6 @@ class DailyProcess extends Model
 
     public function dailyTask()
     {
-        return $this->belongsTo(DailyTask::class);
+        return $this->belongsTo(DailyTask::class, 'daily_id');
     }
 }

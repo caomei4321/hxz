@@ -46,6 +46,8 @@ class CommonTasksController extends Controller
 
     public function destroy(CommonTask $commonTask)
     {
+        $commonTask->users()->detach();
+
         $commonTask->delete();
 
         return response()->json([

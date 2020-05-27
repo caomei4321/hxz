@@ -70,6 +70,22 @@
                                 <input name="password" id="password" type="password" placeholder="" class="form-control" value="{{ old('password', $user->password) }}">
                             </div>
                         </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">部门：</label>
+                                <div class="col-sm-6">
+                                    <select class="chosen-select" data-placement="选择部门" name="department_id" style="width: 350px;" tabindex="2">
+                                        @if($user->id)
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}" @if($user->department_id == $department->id) selected="selected" @endif>{{ $department->name }}</option>
+                                            @endforeach
+                                        @else
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">分类：</label>
                             <div class="col-sm-6">

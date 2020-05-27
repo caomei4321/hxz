@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password', 'age', 'open_id', 'weixin_session_key', 'category_id', 'integral'
+        'name', 'phone', 'password', 'age', 'open_id', 'weixin_session_key', 'category_id', 'department_id', 'integral'
     ];
 
     /**
@@ -47,6 +47,11 @@ class User extends Authenticatable implements JWTSubject
     public function category()
     {
         return $this->belongsTo(UserCategory::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function dailyTask()

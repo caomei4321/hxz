@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration {
 			$table->string('open_id')->nullable(true);
 			$table->string('wx_session_key')->nullable(true);
 			$table->unsignedInteger('category_id')->comment('人员分类/派驻机构');
+            $table->unsignedInteger('department_id')->comment('人员分类/派驻机构');
 			$table->string('community')->comment('责任社区');
 			$table->unsignedInteger('integral')->default(0)->comment('积分');
 			$table->timestamps();

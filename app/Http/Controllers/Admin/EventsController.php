@@ -8,9 +8,15 @@ use App\Http\Controllers\Controller;
 
 class EventsController extends Controller
 {
-    public function index(Event $event) {
+    public function index(Event $event)
+    {
         $events = $event->paginate(15);
         return view('admin.event.index', compact('events'));
+    }
+
+    public function show(Event $event)
+    {
+        return view('admin.event.show', compact('event'));
     }
 
     public function destroy(Event $event)

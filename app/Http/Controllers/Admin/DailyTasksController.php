@@ -45,6 +45,8 @@ class DailyTasksController extends Controller
 
     public function destroy(DailyTask $dailyTask)
     {
+        $dailyTask->users()->detach();
+
         $dailyTask->delete();
 
         return response()->json([

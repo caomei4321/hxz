@@ -46,6 +46,12 @@ class UserCategoriesController extends Controller
 
     public function destroy(UserCategory $userCategory)
     {
+        if ($userCategory->users()->count() > 0) {
+            return response()->json([
+                'status' => 400,
+                'message' => '请先删除当前分类下的用户'
+            ]);
+        }
         $userCategory->delete();
         return response()->json([
             'status' => 200,

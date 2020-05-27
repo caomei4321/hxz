@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>人员信息</h5>
+                    <h5>日常任务记录</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -32,34 +32,34 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <button class="btn btn-info " id="add_user" type="button"><i class="fa fa-paste"></i> 添加人员</button>
+                    <a href="#"><button class="btn btn-info " id="test" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>姓名</th>
-                            <th>手机号</th>
-                            <th>部门</th>
-                            <th>角色</th>
-                            <th>积分</th>
+                            <th>任务标题</th>
+                            <th>执行人</th>
+                            <th>所属单位</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($users as $user)
+                        @foreach($dailyTasks as $dailyTask)
                             <tr class="gradeC">
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->phone }}</td>
-                                <td>{{ $user->department->name }}</td>
-                                <td>{{ $user->category->name }}</td>
-                                <td>{{ $user->integral }}</td>
-                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $dailyTask->id }}</td>
+                                <td>{{ $dailyTask->title }}</td>
+                                <td>{{ $dailyTask->content }}</td>
+                                @if($dailyTask->status == 1)
+                                    <td>进行中</td>
+                                @elseif($dailyTask->status == 0)
+                                    <td>已完结</td>
+                                @endif
+                                <td>{{ $dailyTask->created_at }}</td>
                                 <td class="center">
-                                    <a href="#"><button type="button" class="btn btn-primary btn-xs edit" data-id="{{ $user->id }}">编辑</button></a>
-                                    {{--<a href=""><button type="button" class="btn btn-danger btn-xs">查看</button></a>--}}
-                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $user->id }}">删除</button>
+                                    <a href=""><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
+                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -67,18 +67,16 @@
                         <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>姓名</th>
-                            <th>手机号</th>
-                            <th>部门</th>
-                            <th>角色</th>
-                            <th>积分</th>
+                            <th>标题</th>
+                            <th>任务说明</th>
+                            <th>任务状态</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
-                {{ $users->links() }}
+                {{ $dailyTasks->links() }}
             </div>
         </div>
     </div>
@@ -91,6 +89,8 @@
 
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
 @endsection
 
@@ -111,10 +111,8 @@
                 $.ajaxSetup({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type:"delete",
-                    url: '/admin/users/'+id,
+                    url: '/admin/dailyTasks/'+id,
                     success:function (res) {
-
-                        console.log(res);
                         if (res.status == 200){
                             swal(res.message, "您已经永久删除了这条信息。", "success");
                             location.reload();
@@ -126,24 +124,13 @@
                 $.ajax();
             });
         });
-        $('#add_user').click(function () {
+        $('#test').click(function () {
             layer.open({
                 type: 2,
                 area: ['700px', '450px'],
                 fixed: false, //不固定
                 maxmin: true,
-                content: "{{ route('admin.user.create') }}"
-            });
-        });
-
-        $('.edit').click(function () {
-            var id = $(this).data('id');
-            layer.open({
-                type: 2,
-                area: ['700px', '450px'],
-                fixed: false, //不固定
-                maxmin: true,
-                content: "users/"+id+"/edit"
+                content: "{{ route('admin.dailyTask.create') }}"
             });
         });
     </script>

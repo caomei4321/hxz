@@ -52,7 +52,7 @@
                             <td>{{ $event->status ? '处理完成':'未处理完成'}}</td>
                             <td>{{ $event->created_at }}</td>
                             <td class="center">
-                                <a href=""><button type="button" class="btn btn-danger btn-xs">查看</button></a>
+                                <a href="{{ route('admin.event.show', ['event' => $event->id]) }}"><button type="button" class="btn btn-danger btn-xs">查看</button></a>
                                 <button class="btn btn-warning btn-xs delete" data-id="{{ $event->id }}">删除</button>
                             </td>
                         </tr>
