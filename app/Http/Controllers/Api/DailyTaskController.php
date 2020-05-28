@@ -11,7 +11,7 @@ class DailyTaskController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $dailyTaskList = $user->dailyTask()->orderBy('created_at', 'desc')->paginate(10);
+        $dailyTaskList = $user->dailyTask()->where('status', 1)->orderBy('created_at', 'desc')->paginate(10);
 
         return $this->message($dailyTaskList);
     }

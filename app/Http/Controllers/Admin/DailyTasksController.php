@@ -38,14 +38,20 @@ class DailyTasksController extends Controller
         ]);
     }
 
-    public function show()
+    public function show(DailyTask $dailyTask)
     {
+        $dailyTasks = $dailyTask->dailyProcess;
+       /* foreach ($dailyTasks as $daily) {
+            dd($daily->user->department->name);
+        }*/
 
+        return view('admin.dailyTask.show', compact('dailyTask','dailyTasks'));
     }
 
     public function destroy(DailyTask $dailyTask)
     {
         $dailyTask->users()->detach();
+        $dailyTask->dailyProcess()->delete();
 
         $dailyTask->delete();
 

@@ -58,7 +58,7 @@
                                 @endif
                                 <td>{{ $dailyTask->created_at }}</td>
                                 <td class="center">
-                                    <a href=""><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
+                                    <a href="{{ route('admin.dailyTask.show', ['dailyTask' => $dailyTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>
                                 </td>
                             </tr>

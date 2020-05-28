@@ -39,9 +39,11 @@ class CommonTasksController extends Controller
         ]);
     }
 
-    public function show()
+    public function show(CommonTask $commonTask)
     {
+        $commonTasks = $commonTask->users;
 
+        return view('admin.commonTask.show', compact('commonTasks', 'commonTask'));
     }
 
     public function destroy(CommonTask $commonTask)

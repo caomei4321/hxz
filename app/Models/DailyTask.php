@@ -17,4 +17,9 @@ class DailyTask extends Model
     {
         return $this->belongsToMany(User::class, 'user_has_daily_tasks', 'daily_id', 'user_id');
     }
+
+    public function dailyProcess()
+    {
+        return $this->hasMany(DailyProcess::class, 'daily_id', 'id');
+    }
 }

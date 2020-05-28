@@ -35,8 +35,10 @@
 
 <div class="middle-box text-center loginscreen  animated fadeInDown signin" style="width: 400px;">
         <div style="margin-bottom: 50px;">
-            <image src="{{ asset('assets/admin/img/logo.png') }}"></image>
-            <h2 style="font-size: 24px;font-weight: bold;color: #ec6d03;font-family: cursive;">智能管理系统</h2>
+            <image src="{{ asset('assets/admin/img/logo.png') }}" style="height: 150px"></image>
+            <h2 style="font-size: 24px;font-weight: bold;color: #eaec0e;font-family: cursive;">智慧“红袖章”</h2>
+            <h2 style="font-size: 24px;font-weight: bold;color: #eaec0e;font-family: cursive;">木渎派出所群防群治管理平台</h2>
+            <h2 style="font-size: 24px;font-weight: bold;color: #e8ece0;font-family: cursive;">V1.0</h2>
         </div>
         <h3></h3>
         <div class="signinpanel">

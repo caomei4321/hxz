@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>日常任务记录</h5>
+                    <h5>{{ $dailyTask->title }}</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -32,51 +32,41 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="#"><button class="btn btn-info " id="test" type="button"><i class="fa fa-paste"></i> 发布任务</button>
-                    </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>任务标题</th>
                             <th>执行人</th>
                             <th>所属单位</th>
-                            <th>添加时间</th>
+                            <th>地点</th>
+                            <th>执行时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($dailyTasks as $dailyTask)
                             <tr class="gradeC">
-                                <td>{{ $dailyTask->id }}</td>
-                                <td>{{ $dailyTask->title }}</td>
-                                <td>{{ $dailyTask->content }}</td>
-                                @if($dailyTask->status == 1)
-                                    <td>进行中</td>
-                                @elseif($dailyTask->status == 0)
-                                    <td>已完结</td>
-                                @endif
+                                <td>{{ $dailyTask->user->name }}</td>
+                                <td>{{ $dailyTask->user->department->name }}</td>
+                                <td>{{ $dailyTask->address }}</td>
                                 <td>{{ $dailyTask->created_at }}</td>
                                 <td class="center">
-                                    <a href=""><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
-                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>
+                                    <a href="{{ route('admin.dailyProcess.show', ['dailyProcess' => $dailyTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
+                                    {{--<button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>--}}
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>ID</th>
-                            <th>标题</th>
-                            <th>任务说明</th>
-                            <th>任务状态</th>
-                            <th>添加时间</th>
+                            <th>执行人</th>
+                            <th>所属单位</th>
+                            <th>地点</th>
+                            <th>执行时间</th>
                             <th>操作</th>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
-                {{ $dailyTasks->links() }}
             </div>
         </div>
     </div>
