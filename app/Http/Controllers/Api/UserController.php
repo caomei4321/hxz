@@ -11,11 +11,19 @@ class UserController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        //
-        $completeList = $user->commonTask()
+        // 日常已完成任务
+        $dailyCompleteList = $user->dailyProcess()->with('dailyTask')->orderBy('created_at', 'desc')->get();
+
+        // 其他已完成任务
+        $commonCompleteList = $user->commonTask()
             ->wherePivot('up_at', '!=', null)
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
+
+        $completeList = [
+            'dailyComplete' => $dailyCompleteList,
+            'commonComplete' => $commonCompleteList
+        ];
 
         return $this->message($completeList);
     }
