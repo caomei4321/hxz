@@ -32,6 +32,8 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    <a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
