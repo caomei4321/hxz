@@ -21,7 +21,16 @@ class RepairsController extends Controller
         $user = Auth::guard('api')->user();
 
         // 未完结日常任务
-        $dailyTaskCount = $user->dailyTask()->where('status', 1)->count();
+        $dailyTaskList = $user->dailyTask()->where('status', 1)->get();
+
+        foreach ($dailyTaskList as $k => $v) {
+            $dailyCompleteCount = $v->dailyProcess()->where('user_id', $user->id)->whereDate('created_at', date('Y-m-d',time()))->where('status', 1)->count();
+
+            if ($dailyCompleteCount > 0) {
+                unset($dailyTaskList[$k]);
+            }
+        }
+        $dailyTaskCount = $dailyTaskList->count();
 
         // 未完成专项任务
         $specialTaskCount = $user->commonTask()->where([

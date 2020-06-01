@@ -76,19 +76,19 @@ class AuthorizationsController extends Controller
         }
 
         //根据 code 获取微信 openid 和 session_key
-        /*$miniProgram = \EasyWeChat::miniProgram();
+        $miniProgram = \EasyWeChat::miniProgram();
         $data = $miniProgram->auth->session($code);
 
         if (isset($data['errcode'])) {
             return $this->response->errorUnauthorized('code 不正确');
         }
 
-        $attributes['weixin_session_key'] = $data['session_key'];
-        $attributes['open_id'] = $data['openid'];*/
+        $attributes['wx_session_key'] = $data['session_key'];
+        $attributes['open_id'] = $data['openid'];
 
         $user = Auth::guard('api')->getUser();
 
-        //$user->update($attributes); // 更新用户信息
+        $user->update($attributes); // 更新用户信息
 
         $token = Auth::guard('api')->fromUser($user);
 

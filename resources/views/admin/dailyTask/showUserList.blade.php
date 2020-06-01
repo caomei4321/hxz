@@ -50,7 +50,7 @@
                                 <td>{{ $dailyTask->address }}</td>
                                 <td>{{ $dailyTask->created_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.dailyTask.userList', ['user' => $dailyTask->user_id, 'dailyTask' => $dailyTask->daily_id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show">查看</button></a>
+                                    <a href="{{ route('admin.dailyProcess.show', ['dailyProcess' => $dailyTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
                                     {{--<button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>--}}
                                 </td>
                             </tr>

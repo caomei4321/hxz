@@ -7,7 +7,7 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
 {{--                    <span><img alt="image" class="img-circle" src="{{ asset('assets/admin/img/profile_small.jpg') }}" /></span>--}}
-                    <span><img alt="image" style="height: 60px;" class="img-circle" src="{{ asset('assets/admin/img/zhwjz.png') }}" /></span>
+                    <span><img alt="image" style="height: 60px; border-radius: 0%;" class="img-circle" src="{{ asset('assets/admin/img/zhwjz.png') }}" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold">admin</strong></span>

@@ -9,6 +9,7 @@
         "dingo/api": "^2.0.0-alpha2",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~3.3",
+        "guzzlehttp/guzzle": "6.3",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",

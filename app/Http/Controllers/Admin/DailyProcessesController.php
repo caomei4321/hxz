@@ -13,7 +13,7 @@ class DailyProcessesController extends Controller
     public function index(DailyProcess $dailyProcess, Department $department, Request $request)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
-        $endTime = $request->end_time ? $request->end_time : date('Y-m-d', time());
+        $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
         if ($departmentId) {

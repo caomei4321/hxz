@@ -6,6 +6,7 @@ use App\Models\DailyTask;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class DailyTasksController extends Controller
 {
@@ -40,11 +41,11 @@ class DailyTasksController extends Controller
 
     public function show(DailyTask $dailyTask)
     {
-        $dailyTasks = $dailyTask->dailyProcess;
+        $dailyTasks = $dailyTask->dailyProcess()->groupBy('user_id')->get();
        /* foreach ($dailyTasks as $daily) {
             dd($daily->user->department->name);
         }*/
-
+//dd($dailyTasks);
         return view('admin.dailyTask.show', compact('dailyTask','dailyTasks'));
     }
 
@@ -59,5 +60,13 @@ class DailyTasksController extends Controller
             'status'=> 200,
             'message' => '删除成功'
         ]);
+    }
+
+    public function showUserList(User $user, DailyTask $dailyTask)
+    {
+        $dailyTasks = $user->dailyProcess()->where('daily_id', $dailyTask->id)->orderBy('created_at', 'desc')->get();
+
+        return view('admin.dailyTask.showUserList', compact('dailyTasks', 'dailyTask'));
+
     }
 }

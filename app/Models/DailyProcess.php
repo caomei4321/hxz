@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DailyProcess extends Model
 {
     protected $fillable = [
-        'user_id', 'daily_id', 'address', 'description', 'photo'
+        'user_id', 'daily_id', 'address', 'description', 'photo', 'status'
     ];
 
     public function user()

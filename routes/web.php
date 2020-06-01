@@ -96,6 +96,7 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.dailyTask.destroy',
                     'create' => 'admin.dailyTask.create'
                 ]);
+                Route::get('userDailyTasks/{user}/{dailyTask}', 'Admin\DailyTasksController@showUserList')->name('admin.dailyTask.userList');
                 // 日常处理记录
                 /*Route::resource('dailyProcesses', 'Admin\DailyProcessesController')->names([
                     'index' => 'admin.dailyProcess.index',

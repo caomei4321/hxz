@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendMessage;
 
 class MessagesController extends Controller
 {
@@ -24,10 +25,17 @@ class MessagesController extends Controller
 
     public function store(Request $request,Message $message)
     {
+        $data = $request->only(['title', 'content']);
+
         $message->fill($request->only(['title', 'content']));
         $message->save();
 
         $message->users()->attach($request->users);
+
+        foreach ($request->users as $key => $value) {
+            $job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', $data);
+            dispatch($job);
+        }
 
         return response()->json([
             'status'=> 200,
