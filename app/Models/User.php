@@ -67,7 +67,7 @@ class User extends Authenticatable implements JWTSubject
     public function commonTask()
     {
         return $this->belongsToMany(CommonTask::class,'user_has_common_tasks','user_id','common_id')
-                    ->withPivot('address', 'description', 'photo', 'up_at')
+                    ->withPivot('id','address', 'description', 'photo', 'up_at')
                     ->withTimestamps();
     }
 

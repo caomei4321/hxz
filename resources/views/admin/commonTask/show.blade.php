@@ -45,12 +45,13 @@
                         <tbody>
                         @foreach($commonTasks as $commonTask)
                             <tr class="gradeC">
+                               {{-- {{ dd($commonTask) }}--}}
                                 <td>{{ $commonTask->name }}</td>
                                 <td>{{ $commonTask->department->name }}</td>
                                 <td>{{ $commonTask->pivot->address }}</td>
                                 <td>{{ $commonTask->pivot->up_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.commonProcess.show', ['commonProcess' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show">查看</button></a>
+                                    <a href="{{ route('admin.commonProcess.show', ['commonProcess' => $commonTask->pivot->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show">查看</button></a>
                                     {{--<button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>--}}
                                 </td>
                             </tr>

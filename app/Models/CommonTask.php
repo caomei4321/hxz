@@ -16,7 +16,7 @@ class CommonTask extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_has_common_tasks', 'common_id', 'user_id')
-                    ->withPivot('address', 'description', 'photo', 'up_at')
+                    ->withPivot('id','address', 'description', 'photo', 'up_at')
                     ->withTimestamps();
     }
 }
