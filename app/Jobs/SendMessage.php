@@ -18,6 +18,7 @@ class SendMessage implements ShouldQueue
 
     protected $userId;
     protected $templateId;
+    protected $id;
     protected $data;
 
     /**
@@ -25,11 +26,12 @@ class SendMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user = '',$templateId = '', $data = [])
+    public function __construct($user = '',$templateId = '', $id = '', $data = [])
     {
 
         $this->userId = $user;
         $this->templateId = $templateId;
+        $this->id = $id;
         $this->data = $data;
     }
 
@@ -54,6 +56,7 @@ class SendMessage implements ShouldQueue
             $wxMsg = [
                 'touser' => $openId,
                 'template_id' => $this->templateId,
+                'page' => 'pages/basics/message?id='.$this->id,
                 'data' => [
                     'thing1' => [
                         'value' => $this->data['title']
@@ -61,7 +64,8 @@ class SendMessage implements ShouldQueue
                     'thing2' => [
                         'value' => $this->data['content']
                     ]
-                ]
+                ],
+                'miniprogram_state' => 'developer'
             ];
             $wxMsg = json_encode($wxMsg);
             $sendMsgUri = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$accessToken;

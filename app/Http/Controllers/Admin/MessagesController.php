@@ -33,7 +33,7 @@ class MessagesController extends Controller
         $message->users()->attach($request->users);
 
         foreach ($request->users as $key => $value) {
-            $job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', $data);
+            $job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', $message->id, $data);
             dispatch($job);
         }
 
