@@ -65,7 +65,7 @@ class SendMessage implements ShouldQueue
                         'value' => $this->data['content']
                     ]
                 ],
-                'miniprogram_state' => 'developer'
+                'miniprogram_state' => 'trial'
             ];
             $wxMsg = json_encode($wxMsg);
             $sendMsgUri = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='.$accessToken;
