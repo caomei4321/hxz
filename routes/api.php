@@ -40,6 +40,9 @@ $api->version('v1', [
     //$api->post('wuthorizations', 'AuthorizationsController@weappStore');
     $api->get('categories', 'CategoryController@categories');  //责任清单分类
     $api->group(['middleware' => 'refresh.token'], function ($api) {
+        // 图片上传接口
+        $api->post('uploadImg', 'FileUploadController@saveImg');
+        // 未读消息，未完成任务数量
         $api->get('count', 'RepairsController@count');
         // 日常任务列表
         $api->get('dailyTasks', 'DailyTaskController@index');
@@ -63,6 +66,17 @@ $api->version('v1', [
         $api->get('undone/list', 'UserController@undoneList');
         // 上报记录
         $api->get('uploadEvent/list', 'UserController@uploadEvent');
+        //  用户状态
+        $api->get('getUserStatus', 'SignController@userStatus');
+        //  用户签到
+        $api->get('userSign', 'SignController@sign');
+        // 交班内容
+        $api->get('handoverRecord/records', 'HandoverRecordController@records');
+        // 获取交接用户
+        $api->get('handoverRecord/getUsers', 'HandoverRecordController@getUsers');
+        //  上报交班内容
+        $api->post('handoverRecord/storeHandover', 'HandoverRecordController@storeHandover');
+
 
         $api->get('user', 'RepairsController@thisUser');
 

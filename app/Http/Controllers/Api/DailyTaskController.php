@@ -28,13 +28,13 @@ class DailyTaskController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $res = $uploadHandler->save($request->file('img'),'dailyTask','daily');
+        //$res = $uploadHandler->save($request->file('img'),'dailyTask','daily');
 
         $dailyProcess = $user->dailyProcess()->create([
                                             'daily_id' => $request->daily_id,
                                             'address' => $request->address,
                                             'description' => $request->description,
-                                            'photo' => $res['path'],
+                                            'photo' => json_encode($request->img),
                                             'status' => $request->status
                                         ]);
         //$dailyProcess->save();

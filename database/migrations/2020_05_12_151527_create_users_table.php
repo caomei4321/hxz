@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
             $table->unsignedInteger('department_id')->comment('人员分类/派驻机构');
 			$table->string('community')->comment('责任社区');
 			$table->unsignedInteger('integral')->default(0)->comment('积分');
+			$table->unsignedInteger('sign_type')->default(0)->comment('是否在岗标志，0为不在岗，1为在岗');
 			$table->timestamps();
 			$table->softDeletes();
 		});

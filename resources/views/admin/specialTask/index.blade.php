@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>日常任务</h5>
+                    <h5>专项任务</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="{{ route('admin.dailyTask.create') }}"><button class="btn btn-info " id="test" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    <a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
                     </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
@@ -40,26 +40,28 @@
                             <th>ID</th>
                             <th>标题</th>
                             <th>任务说明</th>
+                            <th>任务分类</th>
                             <th>任务状态</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($dailyTasks as $dailyTask)
+                        @foreach($commonTasks as $commonTask)
                             <tr class="gradeC">
-                                <td>{{ $dailyTask->id }}</td>
-                                <td>{{ $dailyTask->title }}</td>
-                                <td>{{ $dailyTask->content }}</td>
-                                @if($dailyTask->status == 1)
+                                <td>{{ $commonTask->id }}</td>
+                                <td>{{ $commonTask->title }}</td>
+                                <td>{{ $commonTask->content }}</td>
+                                <td>{{ $commonTask->category }}</td>
+                                @if($commonTask->status == 1)
                                     <td>进行中</td>
-                                @elseif($dailyTask->status == 0)
+                                @elseif($commonTask->status == 0)
                                     <td>已完结</td>
                                 @endif
-                                <td>{{ $dailyTask->created_at }}</td>
+                                <td>{{ $commonTask->created_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.dailyTask.show', ['dailyTask' => $dailyTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
-                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>
+                                    <a href="{{ route('admin.specialTask.show', ['commonTask' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonTask->id }}">查看</button></a>
+                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $commonTask->id }}">删除</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -69,6 +71,7 @@
                             <th>ID</th>
                             <th>标题</th>
                             <th>任务说明</th>
+                            <th>任务分类</th>
                             <th>任务状态</th>
                             <th>添加时间</th>
                             <th>操作</th>
@@ -76,7 +79,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $dailyTasks->links() }}
+                {{ $commonTasks->links() }}
             </div>
         </div>
     </div>
@@ -89,7 +92,7 @@
 
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
-    
+
     <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
 @endsection
@@ -111,7 +114,7 @@
                 $.ajaxSetup({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type:"delete",
-                    url: '/admin/dailyTasks/'+id,
+                    url: '/admin/specialTasks/'+id,
                     success:function (res) {
                         if (res.status == 200){
                             swal(res.message, "您已经永久删除了这条信息。", "success");
@@ -124,14 +127,14 @@
                 $.ajax();
             });
         });
-        /*$('#test').click(function () {
+        $('#add_task').click(function () {
             layer.open({
                 type: 2,
                 area: ['700px', '450px'],
                 fixed: false, //不固定
                 maxmin: true,
-                content: "{{ route('admin.dailyTask.create') }}"
+                content: "{{ route('admin.specialTask.create') }}"
             });
-        });*/
+        });
     </script>
 @endsection

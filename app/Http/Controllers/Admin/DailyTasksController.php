@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\DailyTask;
+use App\Models\Department;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,11 +18,19 @@ class DailyTasksController extends Controller
     }
 
 
-    public function create(UserCategory $userCategory)
+    public function create(UserCategory $userCategory, Department $department, Request $request)
     {
         $userCategories = $userCategory->all();
 
-        return view('admin.dailyTask.add', compact('userCategories'));
+        $departments = $department->all();
+
+        $filter = [
+            'department_id' => $request->department_id,
+            'category_id' => $request->category_id
+        ];
+        return view('admin.dailyTask.add', compact('userCategories', 'departments', 'filter'));
+
+
     }
 
     public function store(Request $request, DailyTask $dailyTask)
@@ -33,6 +42,7 @@ class DailyTasksController extends Controller
 
         $dailyTask->users()->attach($request->users);
 
+        return redirect()->route('admin.dailyTask.index');
         return response()->json([
             'status'=> 200,
             'message' => '添加成功'

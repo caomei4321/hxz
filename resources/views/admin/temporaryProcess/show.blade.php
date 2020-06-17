@@ -37,49 +37,49 @@
                             <label class="col-sm-2 control-label">上报人</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->user->name }}</p>
+                                <p class="form-control-static">{{ $commonProcess->user->name }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">问题标题</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->dailyTask->title }}</p>
+                                <p class="form-control-static">{{ $commonProcess->commonTask->title }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">问题描述</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->dailyTask->content }}</p>
+                                <p class="form-control-static">{{ $commonProcess->commonTask->content }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">处理地点</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->address }}</p>
+                                <p class="form-control-static">{{ $commonProcess->address }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">处理描述</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->description }}</p>
+                                <p class="form-control-static">{{ $commonProcess->description }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">处理时间</label>
 
                             <div class="col-sm-10">
-                                <p class="form-control-static">{{ $dailyProcess->created_at }}</p>
+                                <p class="form-control-static">{{ $commonProcess->up_at }}</p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">问题现场图片</label>
 
                             <div class="col-sm-10">
-                                @foreach(json_decode($dailyProcess->photo) as $photo)
+                                @foreach(json_decode($commonProcess->photo) as $photo)
                                 <a class="fancybox" id="img" href="{{ $photo }}" >
                                     <img alt="image" src="{{ $photo }}" />
                                 </a>

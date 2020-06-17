@@ -20,18 +20,19 @@ class SendMessage implements ShouldQueue
     protected $templateId;
     protected $id;
     protected $data;
+    protected $page;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user = '',$templateId = '', $id = '', $data = [])
+    public function __construct($user = '',$templateId = '', $page = '', $data = [])
     {
 
         $this->userId = $user;
         $this->templateId = $templateId;
-        $this->id = $id;
+        $this->page = $page;
         $this->data = $data;
     }
 
@@ -56,7 +57,7 @@ class SendMessage implements ShouldQueue
             $wxMsg = [
                 'touser' => $openId,
                 'template_id' => $this->templateId,
-                'page' => 'pages/basics/message?id='.$this->id,
+                'page' => $this->page,
                 'data' => [
                     'thing1' => [
                         'value' => $this->data['title']

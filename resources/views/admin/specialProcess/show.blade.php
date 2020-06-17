@@ -79,9 +79,11 @@
                             <label class="col-sm-2 control-label">问题现场图片</label>
 
                             <div class="col-sm-10">
-                                <a class="fancybox" id="img" href="{{ $commonProcess->photo }}" >
-                                    <img alt="image" src="{{ $commonProcess->photo }}" />
+                                @foreach(json_decode($commonProcess->photo) as $photo)
+                                <a class="fancybox" id="img" href="{{ $photo }}" >
+                                    <img alt="image" src="{{ $photo }}" />
                                 </a>
+                                @endforeach
                             </div>
                         </div>
 

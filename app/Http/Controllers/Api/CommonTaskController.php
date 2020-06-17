@@ -47,12 +47,10 @@ class CommonTaskController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $res = $uploadHandler->save($request->file('img'),'commonTask','common');
-
         $data = [
             'address' =>$request->address,
             'description' => $request->description,
-            'photo' => $res['path'],
+            'photo' => json_encode($request->img),
             'up_at' => date('Y-m-d H:i:s',time())
         ];
 

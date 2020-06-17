@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>{{ $commonTask->title }}</h5>
+                    <h5>交班记录</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -32,42 +32,47 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    <a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
-                            <th>执行人</th>
-                            <th>所属单位</th>
-                            <th>地点</th>
-                            <th>执行时间</th>
+                            <th>ID</th>
+                            <th>交班人</th>
+                            <th>接班人</th>
+                            <th>交班内容</th>
+                            <th>交班时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($commonTasks as $commonTask)
+                        @foreach($handoverRecords as $handoverRecord)
                             <tr class="gradeC">
-                               {{-- {{ dd($commonTask) }}--}}
-                                <td>{{ $commonTask->name }}</td>
-                                <td>{{ $commonTask->department->name }}</td>
-                                <td>{{ $commonTask->pivot->address }}</td>
-                                <td>{{ $commonTask->pivot->up_at }}</td>
+                                <td>{{ $handoverRecord->id }}</td>
+                                <td>{{ $handoverRecord->sendUser->name }}</td>
+                                <td>{{ $handoverRecord->recipientUser->name }}</td>
+                                <td>{{ $handoverRecord->content }}</td>
+                                <td>{{ $handoverRecord->created_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.commonProcess.show', ['commonProcess' => $commonTask->pivot->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show">查看</button></a>
-                                    {{--<button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>--}}
+                                    {{--<a href="{{ route('admin.temporaryTask.show', ['commonTask' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonTask->id }}">查看</button></a>--}}
+                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $handoverRecord->id }}">删除</button>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>执行人</th>
-                            <th>所属单位</th>
-                            <th>地点</th>
-                            <th>执行时间</th>
+                            <th>ID</th>
+                            <th>交班人</th>
+                            <th>接班人</th>
+                            <th>交班内容</th>
+                            <th>交班时间</th>
                             <th>操作</th>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
+                {{ $handoverRecords->links() }}
             </div>
         </div>
     </div>
@@ -102,7 +107,7 @@
                 $.ajaxSetup({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type:"delete",
-                    url: '/admin/dailyTasks/'+id,
+                    url: '/admin/handoverRecords/'+id,
                     success:function (res) {
                         if (res.status == 200){
                             swal(res.message, "您已经永久删除了这条信息。", "success");
@@ -113,15 +118,6 @@
                     },
                 });
                 $.ajax();
-            });
-        });
-        $('#test').click(function () {
-            layer.open({
-                type: 2,
-                area: ['700px', '450px'],
-                fixed: false, //不固定
-                maxmin: true,
-                content: "{{ route('admin.dailyTask.create') }}"
             });
         });
     </script>

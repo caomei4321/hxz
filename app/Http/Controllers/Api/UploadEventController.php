@@ -12,11 +12,11 @@ class UploadEventController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $res = $uploadHandler->save($request->file('img'),'uploadEvent','event');
+        //$res = $uploadHandler->save($request->file('img'),'uploadEvent','event');
 
         $user->event()->create([
             'category' => $request->category,
-            'img' => $res['path'],
+            'img' => json_encode($request->img),
             'description' => $request->description,
             'status' => $request->status
         ]);

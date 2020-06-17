@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password', 'age', 'open_id', 'wx_session_key', 'category_id', 'department_id', 'integral'
+        'name', 'phone', 'password', 'age', 'open_id', 'wx_session_key', 'category_id', 'department_id', 'integral', 'sign_type'
     ];
 
     /**
@@ -79,5 +79,20 @@ class User extends Authenticatable implements JWTSubject
     public function event()
     {
         return $this->hasMany(Event::class);
+    }
+
+    public function sign()
+    {
+        return $this->hasMany(Sign::class);
+    }
+
+    public function handoverSender()
+    {
+        return $this->hasMany(HandoverRecord::class, 'sender_user', 'id');
+    }
+
+    public function handoverRecipient()
+    {
+        return $this->hasMany(HandoverRecord::class, 'recipient_user', 'id');
     }
 }

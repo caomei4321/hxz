@@ -2,12 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Handlers\ImageUploadHandler;
 
 class FileUploadController extends Controller
 {
+    public function saveImg(Request $request, ImageUploadHandler $uploadHandler)
+    {
+        $folder = $request->folder; // 文件夹
+        $prefix = $request->prefix; // 图片前缀
+        $res = $uploadHandler->save($request->file('img'), $folder, $prefix);
+
+        if ($res['path']) {
+            return $this->success([
+                'message' => '上传成功',
+                'imgPath' => $res['path']
+            ]);
+        } else {
+            return $this->errorResponse(500, [
+                'error' => '上传失败'
+            ]);
+        }
+    }
+
     public function save(Request $request)
     {
         if ($request->chunks) {  //分片上传

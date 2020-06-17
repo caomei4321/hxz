@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form method="get" action="{{ route('admin.commonProcess.index') }}">
+                    <form method="get" action="{{ route('admin.temporaryProcess.index') }}">
                         <div class="form-group form-inline row text-left" id="data_5">
                             {{--<label class="font-noraml">范围选择</label>--}}
                             {{--{{ csrf_field() }}--}}
@@ -51,11 +51,6 @@
                                     @foreach($departments as $department)
                                         <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
                                     @endforeach
-                                </select>
-                                <select class="chosen-select" name="category" style="width: 200px;" tabindex="2" >
-                                    <option value="">选择类别</option>
-                                    <option value="专项任务" hassubinfo="true" @if( $filter['category'] == '专项任务') selected @endif>专项任务</option>
-                                    <option value="临时任务" hassubinfo="true" @if( $filter['category'] == '临时任务') selected @endif>临时任务</option>
                                 </select>
                                 <input type="submit" class="btn btn-primary" value="搜索">
                             </div>
@@ -84,7 +79,7 @@
                                 <td>{{ $commonProcess->commonTask->category }}</td>
                                 <td>{{ $commonProcess->up_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.commonProcess.show',['commonProcess' => $commonProcess->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonProcess->id }}">查看</button></a>
+                                    <a href="{{ route('admin.temporaryProcess.show',['commonProcess' => $commonProcess->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonProcess->id }}">查看</button></a>
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $commonProcess->id }}">删除</button>
                                 </td>
                             </tr>
@@ -143,7 +138,7 @@
                 $.ajaxSetup({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type:"delete",
-                    url: '/admin/commonProcesses/'+id,
+                    url: '/admin/temporaryProcesses/'+id,
                     success:function (res) {
                         if (res.status == 200){
                             swal(res.message, "您已经永久删除了这条信息。", "success");

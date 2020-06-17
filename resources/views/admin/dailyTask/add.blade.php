@@ -29,7 +29,30 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                        <form method="post" action="#" id="daily_form" data-action="{{ route('admin.dailyTask.store') }}" class="form-horizontal">
+                    <form method="get" action="{{ route('admin.dailyTask.create') }}">
+                        <div class="form-group form-inline row text-left" id="data_5">
+                            <div class="form-group">
+                                <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
+                                    <option value="">选择部门</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="chosen-select" name="category_id" style="width: 200px;" tabindex="2" >
+                                    <option value="">选择分类</option>
+                                    @foreach($userCategories as $category)
+                                        <option value="{{ $category->id }}" hassubinfo="true" @if( $filter['category_id'] == $category->id) selected @endif>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="submit" class="btn btn-primary" value="搜索人员">
+                            </div>
+
+                        </div>
+                    </form>
+                        <form method="post" action="{{ route('admin.dailyTask.store') }}" id="daily_form" data-action="{{ route('admin.dailyTask.store') }}" class="form-horizontal">
+
                                     <div class="form-group">
                                         @if( count($errors) >0)
                                             @foreach($errors->all() as $error)
@@ -59,15 +82,26 @@
                                             <input name="status" id="status" type="text" placeholder="" class="form-control" value="">
                                         </div>
                                     </div>--}}
+                            @foreach($userCategories as $k => $userCategory)
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">执行人：</label>
-                                        @foreach($userCategories as $userCategory)
+                                        @if($k == 0)
+                                            <label class="col-sm-2 control-label">执行人：</label>
+                                        @else
+                                            <label class="col-sm-2 control-label"> </label>
+                                        @endif
+
                                             @if(count($userCategory->users) == 0)
+                                                <?php continue; ?>
+                                            @endif
+                                            @if($filter['category_id'] && $filter['category_id'] != $userCategory->id)
                                                 <?php continue; ?>
                                             @endif
                                             <div class="col-sm-6">
                                                 <p>{{ $userCategory->name }}</p>
                                                 @foreach($userCategory->users as $user)
+                                                    @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
+                                                        <?php continue; ?>
+                                                    @endif
                                                     <div class="checkbox checkbox-inline">
                                                         <input type="checkbox" name="users[]" id="inlineCheckbox{{$user->id}}" value="{{ $user->id }}">
                                                         <label for="inlineCheckbox{{$user->id}}"> {{ $user->name }} </label>
@@ -75,15 +109,16 @@
                                                 @endforeach
 
                                             </div>
-                                        @endforeach
-                                    <div class="hr-line-dashed"></div>
+
+                                    </div>
+                            @endforeach
                                     <div class="form-group">
                                         <div class="col-sm-4 col-sm-offset-2">
-                                            <button class="btn btn-primary" type="button" id="add_daily">提交</button>
+                                            <button class="btn btn-primary" type="submit" id="add_daily">提交</button>
 
                                         </div>
                                     </div>
-                                </form>
+                        </form>
                 </div>
             </div>
         </div>
@@ -91,12 +126,36 @@
 @endsection
 
 @section('scripts')
-
+    <!-- Chosen -->
+    <script src="{{ asset('assets/admin/js/plugins/chosen/chosen.jquery.js') }}"></script>
 @endsection
 
 @section('javascript')
      <script>
-         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+         $('#datepicker').datepicker();
+         var config = {
+             '.chosen-select': {},
+             '.chosen-select-deselect': {
+                 allow_single_deselect: true
+             },
+             '.chosen-select-no-single': {
+                 disable_search_threshold: 10
+             },
+             '.chosen-select-no-results': {
+                 no_results_text: 'Oops, nothing found!'
+             },
+             '.chosen-select-width': {
+                 width: "95%"
+             }
+         };
+         for (var selector in config) {
+             $(selector).chosen(config[selector]);
+         }
+         $('.dataTables-example').dataTable({
+             "lengthChange": false,
+             "paging": false
+         });
+         /*var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
          var url = $("#daily_form").data('action');
 
          $('#add_daily').on('click', function(){
@@ -119,6 +178,6 @@
              });
              //parent.window.location.reload();
              //parent.layer.close(index);
-         });
+         });*/
     </script>
 @endsection

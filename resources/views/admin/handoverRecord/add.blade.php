@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form method="post" action="#" id="common_form" data-action="{{ route('admin.commonTask.store') }}" class="form-horizontal">
+                    <form method="post" action="#" id="common_form" data-action="{{ route('admin.temporaryTask.store') }}" class="form-horizontal">
                         <div class="form-group">
                             @if( count($errors) >0)
                                 @foreach($errors->all() as $error)
@@ -54,15 +54,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">任务分类：</label>
-                            <div class="col-sm-6">
-                                <select class="chosen-select" data-placement="选择分类" name="category" style="width: 350px;" tabindex="2">
-                                    <option value="临时任务"selected="selected">临时任务</option>
-                                    <option value="专项任务"selected="selected">专项任务</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">执行人：</label>
                             @foreach($userCategories as $userCategory)
                                 @if(count($userCategory->users) == 0)
@@ -70,7 +61,7 @@
                                 @endif
                                 <div class="col-sm-6">
                                     <p>{{ $userCategory->name }}</p>
-                                    @foreach($userCategory->users as $user)
+                                    @foreach($userCategory->users->where('sign_type', 1) as $user)
                                         <div class="checkbox checkbox-inline">
                                             <input type="checkbox" name="users[]" id="inlineCheckbox{{$user->id}}" value="{{ $user->id }}">
                                             <label for="inlineCheckbox{{$user->id}}"> {{ $user->name }} </label>

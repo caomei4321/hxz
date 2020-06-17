@@ -34,12 +34,20 @@
                 <a class="J_menuItem" href="{{ route('admin.message.index') }}"><i class="fa fa-desktop"></i> <span class="nav-label">通知管理</span></a>
             </li>
             <li>
+                <a class="J_menuItem" href="{{ route('admin.sign.index') }}"><i class="fa fa-desktop"></i> <span class="nav-label">签到统计</span></a>
+            </li>
+            <li>
+                <a class="J_menuItem" href="{{ route('admin.handoverRecord.index') }}"><i class="fa fa-desktop"></i> <span class="nav-label">交接班记录</span></a>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-table"></i> <span class="nav-label">任务管理</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a class="J_menuItem" href="{{ route('admin.dailyTask.index') }}"><i class="fa fa-user"></i> <span class="nav-label">日常任务</span></a></li>
                     <li><a class="J_menuItem" href="{{ route('admin.dailyProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">日常处理记录</span></a></li>
-                    <li><a class="J_menuItem" href="{{ route('admin.commonTask.index') }}"><i class="fa fa-map-marker"></i> <span class="nav-label">其他任务</span></a></li>
-                    <li><a class="J_menuItem" href="{{ route('admin.commonProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">其他处理记录</span></a></li>
+                    <li><a class="J_menuItem" href="{{ route('admin.temporaryTask.index') }}"><i class="fa fa-map-marker"></i> <span class="nav-label">临时任务</span></a></li>
+                    <li><a class="J_menuItem" href="{{ route('admin.temporaryProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">临时处理记录</span></a></li>
+                    <li><a class="J_menuItem" href="{{ route('admin.specialTask.index') }}"><i class="fa fa-map-marker"></i> <span class="nav-label">专项任务</span></a></li>
+                    <li><a class="J_menuItem" href="{{ route('admin.specialProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">专项处理记录</span></a></li>
                 </ul>
             </li>
             <li>

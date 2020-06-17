@@ -97,6 +97,9 @@ Route::group(['prefix' => 'admin'], function () {
                     'create' => 'admin.dailyTask.create'
                 ]);
                 Route::get('userDailyTasks/{user}/{dailyTask}', 'Admin\DailyTasksController@showUserList')->name('admin.dailyTask.userList');
+
+                // 签到统计
+                Route::get('signs', 'Admin\SignsController@index')->name('admin.sign.index');
                 // 日常处理记录
                 /*Route::resource('dailyProcesses', 'Admin\DailyProcessesController')->names([
                     'index' => 'admin.dailyProcess.index',
@@ -110,25 +113,51 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::any('dailyProcesses', 'Admin\DailyProcessesController@index')->name('admin.dailyProcess.index');
                 Route::get('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@show')->name('admin.dailyProcess.show');
                 Route::delete('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@destroy')->name('admin.dailyProcess.destroy');
-                Route::any('commonProcesses', 'Admin\CommonProcessesController@index')->name('admin.commonProcess.index');
-                Route::get('commonProcesses/{commonProcess}', 'Admin\CommonProcessesController@show')->name('admin.commonProcess.show');
-                Route::delete('commonProcesses/{commonProcess}', 'Admin\CommonProcessesController@destroy')->name('admin.commonProcess.destroy');
+                Route::any('temporaryProcesses', 'Admin\TemporaryProcessesController@index')->name('admin.temporaryProcess.index');
+                Route::get('temporaryProcesses/{commonProcess}', 'Admin\TemporaryProcessesController@show')->name('admin.temporaryProcess.show');
+                Route::delete('temporaryProcesses/{commonProcess}', 'Admin\TemporaryProcessesController@destroy')->name('admin.temporaryProcess.destroy');
+                Route::any('specialProcesses', 'Admin\SpecialProcessesController@index')->name('admin.specialProcess.index');
+                Route::get('specialProcesses/{commonProcess}', 'Admin\SpecialProcessesController@show')->name('admin.specialProcess.show');
+                Route::delete('specialProcesses/{commonProcess}', 'Admin\SpecialProcessesController@destroy')->name('admin.specialProcess.destroy');
 
-                // 其他任务
-                Route::resource('commonTasks', 'Admin\CommonTasksController', ['except' => ['edit', 'update']])->names([
-                    'index' => 'admin.commonTask.index',
-                    'store' => 'admin.commonTask.store',
-                    'show' => 'admin.commonTask.show',
-                    'destroy' => 'admin.commonTask.destroy',
-                    'create' => 'admin.commonTask.create'
+                // 临时任务
+                Route::resource('temporaryTasks', 'Admin\TemporaryTasksController', ['except' => ['edit', 'update', 'show', 'destroy']])->names([
+                    'index' => 'admin.temporaryTask.index',
+                    'store' => 'admin.temporaryTask.store',
+                    //'show' => 'admin.temporaryTask.show',
+                    //'destroy' => 'admin.temporaryTask.destroy',
+                    'create' => 'admin.temporaryTask.create'
                 ]);
+                Route::get('temporaryTasks/{commonTask}', 'Admin\TemporaryTasksController@show')->name('admin.temporaryTask.show');
+                Route::delete('temporaryTasks/{commonTask}', 'Admin\TemporaryTasksController@destroy')->name('admin.temporaryTask.destroy');
 
+                // 专项任务
+                Route::resource('specialTasks', 'Admin\SpecialTasksController', ['except' => ['edit', 'update', 'show', 'destroy']])->names([
+                    'index' => 'admin.specialTask.index',
+                    'store' => 'admin.specialTask.store',
+                   // 'show' => 'admin.specialTask.show',
+                    //'destroy' => 'admin.specialTask.destroy',
+                    'create' => 'admin.specialTask.create'
+                ]);
+                Route::get('specialTasks/{commonTask}', 'Admin\SpecialTasksController@show')->name('admin.specialTask.show');
+                Route::delete('specialTasks/{commonTask}', 'Admin\SpecialTasksController@destroy')->name('admin.specialTask.destroy');
+
+                // 上报记录
                 Route::resource('events', 'Admin\EventsController', ['except' => ['edit', 'update']])->names([
                     'index' => 'admin.event.index',
                     'store' => 'admin.event.store',
                     'show' => 'admin.event.show',
                     'destroy' => 'admin.event.destroy',
                     'create' => 'admin.event.create'
+                ]);
+
+                // 交班记录
+                Route::resource('handoverRecords', 'Admin\HandoverRecordsController', ['except' => ['edit', 'update']])->names([
+                    'index' => 'admin.handoverRecord.index',
+                    'store' => 'admin.handoverRecord.store',
+                    'show' => 'admin.handoverRecord.show',
+                    'destroy' => 'admin.handoverRecord.destroy',
+                    'create' => 'admin.handoverRecord.create'
                 ]);
 
             });
