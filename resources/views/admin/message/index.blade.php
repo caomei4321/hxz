@@ -40,6 +40,7 @@
                             <th>ID</th>
                             <th>标题</th>
                             <th>内容</th>
+                            <th>已读人员</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -50,6 +51,11 @@
                                 <td>{{ $message->id }}</td>
                                 <td>{{ $message->title }}</td>
                                 <td>{{ $message->content }}</td>
+                                <td>
+                                    @foreach($message->users()->wherePivot('status', 1)->get() as $user)
+                                        {{ $user->name ? $user->name.';' : '' }}
+                                    @endforeach
+                                </td>
                                 <td>{{ $message->created_at }}</td>
                                 <td class="center">
                                     <a href=""><button type="button" class="btn btn-danger btn-xs">查看</button></a>
@@ -63,6 +69,7 @@
                             <th>ID</th>
                             <th>标题</th>
                             <th>内容</th>
+                            <th>已读人员</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>

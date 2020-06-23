@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Jobs\SendMessage;
 use App\Models\CommonTask;
+use App\Models\Department;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,16 +13,23 @@ class TemporaryTasksController extends Controller
 {
     public function index(CommonTask $commonTask)
     {
-        $commonTasks = $commonTask->where('category', '临时任务')->paginate(15);
+        $commonTasks = $commonTask->where('category', '临时任务')->orderBy('id', 'desc')->paginate(15);
         return view('admin.temporaryTask.index', compact('commonTasks'));
     }
 
 
-    public function create(UserCategory $userCategory)
+    public function create(UserCategory $userCategory, Department $department, Request $request)
     {
         $userCategories = $userCategory->all();
 
-        return view('admin.temporaryTask.add', compact('userCategories'));
+        $departments = $department->all();
+
+        $filter = [
+            'department_id' => $request->department_id,
+            'category_id' => $request->category_id
+        ];
+
+        return view('admin.temporaryTask.add', compact('userCategories', 'departments', 'filter'));
     }
 
     public function store(Request $request, CommonTask $commonTask)
@@ -39,10 +47,7 @@ class TemporaryTasksController extends Controller
             dispatch($job);
         }
 
-        return response()->json([
-            'status'=> 200,
-            'message' => '添加成功'
-        ]);
+        return redirect()->route('admin.temporaryTask.index');
     }
 
     public function show(CommonTask $commonTask)

@@ -76,6 +76,8 @@ $api->version('v1', [
         $api->get('handoverRecord/getUsers', 'HandoverRecordController@getUsers');
         //  上报交班内容
         $api->post('handoverRecord/storeHandover', 'HandoverRecordController@storeHandover');
+        //  设交班内容为已读
+        $api->get('handoverRecord/readHandover', 'HandoverRecordController@readHandover');
 
 
         $api->get('user', 'RepairsController@thisUser');

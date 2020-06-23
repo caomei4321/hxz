@@ -19,7 +19,7 @@ class CreateDailyProcessesTable extends Migration
             $table->unsignedInteger('daily_id');
             $table->string('address')->comment('地址');
             $table->string('description')->comment('描述');
-            $table->string('photo')->comment('留痕图片');
+            $table->text('photo')->comment('留痕图片');
             $table->unsignedInteger('status')->comment('当天任务任务状态');
             $table->timestamps();
         });

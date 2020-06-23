@@ -19,7 +19,7 @@ class CreateUserHasCommonTasksTable extends Migration
             $table->unsignedInteger('common_id');
             $table->string('address')->nullable(true);
             $table->string('description')->nullable(true);
-            $table->string('photo')->nullable(true);
+            $table->text('photo')->nullable(true);
             $table->timestamp('up_at')->nullable(true);
             $table->timestamps();
         });

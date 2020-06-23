@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    <a href="{{ route('admin.temporaryTask.create') }}"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
                     </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
@@ -127,14 +127,14 @@
                 $.ajax();
             });
         });
-        $('#add_task').click(function () {
+        /*$('#add_task').click(function () {
             layer.open({
                 type: 2,
                 area: ['700px', '450px'],
                 fixed: false, //不固定
                 maxmin: true,
-                content: "{{ route('admin.temporaryTask.create') }}"
+                content: ""
             });
-        });
+        });*/
     </script>
 @endsection

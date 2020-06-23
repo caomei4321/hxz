@@ -132,7 +132,6 @@
 
 @section('javascript')
      <script>
-         $('#datepicker').datepicker();
          var config = {
              '.chosen-select': {},
              '.chosen-select-deselect': {

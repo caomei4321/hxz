@@ -17,6 +17,7 @@ class UploadEventController extends Controller
         $user->event()->create([
             'category' => $request->category,
             'img' => json_encode($request->img),
+            'address' => $request->address,
             'description' => $request->description,
             'status' => $request->status
         ]);

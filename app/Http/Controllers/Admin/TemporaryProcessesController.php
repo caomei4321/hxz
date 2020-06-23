@@ -25,7 +25,7 @@ class TemporaryProcessesController extends Controller
         }
         //if ($category) {
         $categories = DB::table('common_tasks')->where('category', '临时任务')->pluck('id');
-        $commonProcesses = $commonProcesses->whereIn('common_id', $categories)->paginate();
+        $commonProcesses = $commonProcesses->whereIn('common_id', $categories)->orderBy('id', 'desc')->paginate();
         //} else {
         //    $commonProcesses = $commonProcesses->paginate();
         //}

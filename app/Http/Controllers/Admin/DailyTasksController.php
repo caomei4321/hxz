@@ -13,7 +13,7 @@ class DailyTasksController extends Controller
 {
     public function index(DailyTask $dailyTask)
     {
-        $dailyTasks = $dailyTask->paginate(15);
+        $dailyTasks = $dailyTask->orderBy('id', 'desc')->paginate(15);
         return view('admin.dailyTask.index', compact('dailyTasks'));
     }
 

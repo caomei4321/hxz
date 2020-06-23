@@ -10,7 +10,7 @@ class EventsController extends Controller
 {
     public function index(Event $event)
     {
-        $events = $event->paginate(15);
+        $events = $event->orderBy('id', 'desc')->paginate(15);
         return view('admin.event.index', compact('events'));
     }
 

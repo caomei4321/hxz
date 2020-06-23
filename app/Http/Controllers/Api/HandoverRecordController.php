@@ -40,4 +40,18 @@ class HandoverRecordController extends Controller
             'message' => '交接成功'
         ]);
     }
+    // 设置交接信息为已读
+    public function readHandover(Request $request)
+    {
+        $user = Auth()->guard('api')->user();
+
+        $user->handoverRecipient()->where('id', $request->id)->update([
+            'read_time' => date('Y-m-d H:i:s', time())
+        ]);
+
+        return $this->success([
+            'message' => '修改成功',
+            'read_time' => date('Y-m-d H:i:s', time())
+        ]);
+    }
 }

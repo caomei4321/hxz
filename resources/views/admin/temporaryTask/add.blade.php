@@ -29,7 +29,29 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form method="post" action="#" id="common_form" data-action="{{ route('admin.temporaryTask.store') }}" class="form-horizontal">
+                    <form method="get" action="{{ route('admin.temporaryTask.create') }}">
+                        <div class="form-group form-inline row text-left" id="data_5">
+                            <div class="form-group">
+                                <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
+                                    <option value="">选择部门</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="chosen-select" name="category_id" style="width: 200px;" tabindex="2" >
+                                    <option value="">选择分类</option>
+                                    @foreach($userCategories as $category)
+                                        <option value="{{ $category->id }}" hassubinfo="true" @if( $filter['category_id'] == $category->id) selected @endif>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="submit" class="btn btn-primary" value="搜索人员">
+                            </div>
+
+                        </div>
+                    </form>
+                    <form method="post" action="{{ route('admin.temporaryTask.store') }}" id="common_form" data-action="{{ route('admin.temporaryTask.store') }}" class="form-horizontal">
                         <div class="form-group">
                             @if( count($errors) >0)
                                 @foreach($errors->all() as $error)
@@ -59,9 +81,15 @@
                                 @if(count($userCategory->users) == 0)
                                     <?php continue; ?>
                                 @endif
+                                @if($filter['category_id'] && $filter['category_id'] != $userCategory->id)
+                                    <?php continue; ?>
+                                @endif
                                 <div class="col-sm-6">
                                     <p>{{ $userCategory->name }}</p>
                                     @foreach($userCategory->users->where('sign_type', 1) as $user)
+                                        @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
+                                            <?php continue; ?>
+                                        @endif
                                         <div class="checkbox checkbox-inline">
                                             <input type="checkbox" name="users[]" id="inlineCheckbox{{$user->id}}" value="{{ $user->id }}">
                                             <label for="inlineCheckbox{{$user->id}}"> {{ $user->name }} </label>
@@ -73,7 +101,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="button" id="add_common">提交</button>
+                                    <button class="btn btn-primary" type="submit" id="add_common">提交</button>
                                 </div>
                             </div>
                     </form>
@@ -109,7 +137,7 @@
             $(selector).chosen(config[selector]);
         }
 
-        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        /*var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         var url = $("#common_form").data('action');
 
         $('#add_common').on('click', function(){
@@ -132,6 +160,6 @@
             });
             //parent.window.location.reload();
             //parent.layer.close(index);
-        });
+        });*/
     </script>
 @endsection

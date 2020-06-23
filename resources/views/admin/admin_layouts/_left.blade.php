@@ -42,7 +42,7 @@
             <li>
                 <a href="#"><i class="fa fa-table"></i> <span class="nav-label">任务管理</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a class="J_menuItem" href="{{ route('admin.dailyTask.index') }}"><i class="fa fa-user"></i> <span class="nav-label">日常任务</span></a></li>
+                    <li><a class="J_menuItem" href="{{ route('admin.dailyTask.index') }}"><i class="fa fa-map-marker"></i> <span class="nav-label">日常任务</span></a></li>
                     <li><a class="J_menuItem" href="{{ route('admin.dailyProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">日常处理记录</span></a></li>
                     <li><a class="J_menuItem" href="{{ route('admin.temporaryTask.index') }}"><i class="fa fa-map-marker"></i> <span class="nav-label">临时任务</span></a></li>
                     <li><a class="J_menuItem" href="{{ route('admin.temporaryProcess.index') }}"><i class="fa fa-user"></i> <span class="nav-label">临时处理记录</span></a></li>
