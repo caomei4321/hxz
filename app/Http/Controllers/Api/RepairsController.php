@@ -47,11 +47,18 @@ class RepairsController extends Controller
 
         $messageCount = $user->message()->wherePivot('status',0)->count();
 
+        // 交接班信息
+        $handoverRecordCount = $user->handoverRecipient()->whereDate('created_at', '>=', date('Y-m-d', strtotime("-1 day")))
+                                    ->whereDate('created_at', '<=', date('Y-m-d', time()))
+                                    ->where('read_time', null)
+                                    ->count();
+
         return $this->message([
             'dailyTaskCount' => $dailyTaskCount,
             'specialTaskCount' => $specialTaskCount,
             'temporaryTaskCount' => $temporaryTaskCount,
-            'messageCount' => $messageCount
+            'messageCount' => $messageCount,
+            'handoverRecordCount' => $handoverRecordCount
         ]);
     }
 
