@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Jobs\SendMessage;
 use App\Models\HandoverRecord;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,6 +36,11 @@ class HandoverRecordController extends Controller
             'recipient_user' => $request->recipient_user,
             'content' => $request->description
         ]);
+        $job = new SendMessage($request->recipient_user, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', 'pages/basics/shift', [
+            'title' => '交接信息',
+            'content' => $request->description
+        ]);
+        dispatch($job);
 
         return $this->success([
             'message' => '交接成功'
