@@ -11,7 +11,9 @@ class DailyTaskController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $dailyTaskList = $user->dailyTask()->where('status', 1)->orderBy('created_at', 'desc')->paginate();
+        // 暂时不使用分页
+        //$dailyTaskList = $user->dailyTask()->where('status', 1)->orderBy('created_at', 'desc')->paginate();
+        $dailyTaskList = $user->dailyTask()->where('status', 1)->orderBy('created_at', 'desc')->get();
 
         foreach ($dailyTaskList as $k => $v) {
             $dailyCompleteCount = $v->dailyProcess()->where('user_id', $user->id)->whereDate('created_at', date('Y-m-d',time()))->where('status', 1)->count();

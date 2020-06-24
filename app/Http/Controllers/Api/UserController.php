@@ -36,7 +36,8 @@ class UserController extends Controller
         $undoneList = $user->commonTask()
             ->wherePivot('up_at', null)
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        //    ->paginate(10);
+            ->get();
 
         return $this->message($undoneList);
     }
@@ -46,7 +47,8 @@ class UserController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        $uploadEvents = $user->event()->orderBy('created_at', 'desc')->paginate(10);
+        //$uploadEvents = $user->event()->orderBy('created_at', 'desc')->paginate(10);
+        $uploadEvents = $user->event()->orderBy('created_at', 'desc')->get();
 
         return $this->message($uploadEvents);
     }
