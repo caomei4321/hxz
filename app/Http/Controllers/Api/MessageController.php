@@ -11,8 +11,8 @@ class MessageController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
-        //$messages = $user->message()->orderBy('created_at', 'desc')->paginate(10);
-        $messages = $user->message()->orderBy('created_at', 'desc')->get();
+        $messages = $user->message()->orderBy('created_at', 'desc')->paginate();
+        //$messages = $user->message()->orderBy('created_at', 'desc')->get();
 
         //$dailyTaskList = $user->dailyTask()->orderBy('created_at', 'desc')->paginate(10);
 

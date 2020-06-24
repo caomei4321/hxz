@@ -20,8 +20,8 @@ class CommonTaskController extends Controller
                                 ])
                                 ->wherePivot('up_at',null)
                                 ->orderBy('created_at', 'desc')
-        //                        ->paginate(10);
-                                ->get();
+                                ->paginate(20);
+        //                        ->get();
 
         return $this->message($specialTaskList);
     }
@@ -38,8 +38,8 @@ class CommonTaskController extends Controller
                                     ])
                                     ->wherePivot('up_at',null)
                                     ->orderBy('created_at', 'desc')
-        //                           ->paginate(10);
-                                    ->get();
+                                   ->paginate(20);
+        //                            ->get();
 
         return $this->message($temporaryTaskList);
     }
