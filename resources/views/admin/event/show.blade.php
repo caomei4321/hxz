@@ -41,6 +41,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">联系方式</label>
+
+                            <div class="col-sm-10">
+                                <p class="form-control-static">{{ $event->user->phone }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">所属单位</label>
 
                             <div class="col-sm-10">
@@ -62,7 +69,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">处理地点</label>
+                            <label class="col-sm-2 control-label">事件地点</label>
+
+                            <div class="col-sm-10">
+                                <p class="form-control-static">{{ $event->address }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">处理状态</label>
 
                             <div class="col-sm-10">
                                 @if( $event->status == 1)
