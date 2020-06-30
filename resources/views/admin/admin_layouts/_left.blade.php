@@ -54,7 +54,7 @@
                 <a class="J_menuItem" href="{{ route('admin.event.index') }}"><i class="fa fa-calendar-minus-o"></i> <span class="nav-label">上报事件</span></a>
             </li>
             <li>
-                <a class="J_menuItem" href=""><i class="fa fa-users"></i> <span class="nav-label">手册</span></a>
+                <a class="J_menuItem" href="{{ route('admin.manual.index') }}"><i class="fa fa-users"></i> <span class="nav-label">手册</span></a>
             </li>
 
         </ul>

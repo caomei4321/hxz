@@ -78,6 +78,8 @@ $api->version('v1', [
         $api->post('handoverRecord/storeHandover', 'HandoverRecordController@storeHandover');
         //  设交班内容为已读
         $api->get('handoverRecord/readHandover', 'HandoverRecordController@readHandover');
+        //  使用手册
+        $api->get('manual/manualList', 'ManualController@index');
 
 
         $api->get('user', 'RepairsController@thisUser');

@@ -18,6 +18,9 @@ Route::get('/', function (){
 
 Auth::routes();
 
+
+//Route::post('admin/saveManualImg', 'Admin\ManualsController@saveImg');
+
 Route::group(['prefix' => 'admin'], function () {
 
     Route::get('login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.index');
@@ -26,6 +29,8 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::group(['middleware' => 'auth:admin'], function () {
             Route::get('/', 'Admin\IndexController@index');
+
+            Route::post('saveManualImg', 'Admin\ManualsController@saveImg');
 
             Route::get('count', 'Admin\CountsController@index')->name('admin.counts.index');
 
@@ -158,6 +163,18 @@ Route::group(['prefix' => 'admin'], function () {
                     'show' => 'admin.handoverRecord.show',
                     'destroy' => 'admin.handoverRecord.destroy',
                     'create' => 'admin.handoverRecord.create'
+                ]);
+
+                // 小程序使用手册
+                Route::get('manuals/updateSort/{manual}', 'Admin\ManualsController@updateSort');
+                Route::resource('manuals', 'Admin\ManualsController')->names([
+                    'index' => 'admin.manual.index',
+                    'store' => 'admin.manual.store',
+                    'show' => 'admin.manual.show',
+                    'destroy' => 'admin.manual.destroy',
+                    'create' => 'admin.manual.create',
+                    'edit' => 'admin.manual.edit',
+                    'update' => 'admin.manual.update'
                 ]);
 
             });
