@@ -51,7 +51,9 @@
                                 <td>{{ $commonTask->pivot->address }}</td>
                                 <td>{{ $commonTask->pivot->up_at }}</td>
                                 <td class="center">
+                                    @if($commonTask->pivot->address)
                                     <a href="{{ route('admin.specialProcess.show', ['commonProcess' => $commonTask->pivot->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show">查看</button></a>
+                                    @endif
                                     {{--<button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>--}}
                                 </td>
                             </tr>
