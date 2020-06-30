@@ -68,4 +68,20 @@ class TemporaryTasksController extends Controller
             'message' => '删除成功'
         ]);
     }
+
+    // 修改任务状态
+    public function changeStatus(CommonTask $commonTask)
+    {
+        if ($commonTask->status == 1) {
+            $commonTask->status = 0;
+        } else {
+            $commonTask->status = 1;
+        }
+        $commonTask->save();
+
+        return response()->json([
+            'message' => '修改成功',
+            'status' => 200
+        ]);
+    }
 }

@@ -94,6 +94,7 @@ Route::group(['prefix' => 'admin'], function () {
                 ]);
 
                 // 日常任务
+                Route::get('dailyTask/changeStatus/{dailyTask}', 'Admin\DailyTasksController@changeStatus'); // 修改任务状态
                 Route::resource('dailyTasks', 'Admin\DailyTasksController', ['except' => ['edit', 'update']])->names([
                     'index' => 'admin.dailyTask.index',
                     'store' => 'admin.dailyTask.store',
@@ -126,6 +127,7 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::delete('specialProcesses/{commonProcess}', 'Admin\SpecialProcessesController@destroy')->name('admin.specialProcess.destroy');
 
                 // 临时任务
+                Route::get('temporaryTask/changeStatus/{commonTask}', 'Admin\TemporaryTasksController@changeStatus'); // 修改任务状态
                 Route::resource('temporaryTasks', 'Admin\TemporaryTasksController', ['except' => ['edit', 'update', 'show', 'destroy']])->names([
                     'index' => 'admin.temporaryTask.index',
                     'store' => 'admin.temporaryTask.store',
@@ -137,6 +139,7 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::delete('temporaryTasks/{commonTask}', 'Admin\TemporaryTasksController@destroy')->name('admin.temporaryTask.destroy');
 
                 // 专项任务
+                Route::get('specialTask/changeStatus/{commonTask}', 'Admin\SpecialTasksController@changeStatus'); // 修改任务状态
                 Route::resource('specialTasks', 'Admin\SpecialTasksController', ['except' => ['edit', 'update', 'show', 'destroy']])->names([
                     'index' => 'admin.specialTask.index',
                     'store' => 'admin.specialTask.store',

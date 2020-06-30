@@ -59,6 +59,7 @@
                                 <td>{{ $dailyTask->created_at }}</td>
                                 <td class="center">
                                     <a href="{{ route('admin.dailyTask.show', ['dailyTask' => $dailyTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $dailyTask->id }}">查看</button></a>
+                                    <button class="btn btn-info btn-xs edit" data-id="{{ $dailyTask->id }}">修改状态</button>
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $dailyTask->id }}">删除</button>
                                 </td>
                             </tr>
@@ -88,7 +89,8 @@
     <script src="{{ asset('assets/admin/js/plugins/dataTables/dataTables.bootstrap.js') }}"></script>
 
     <!-- Sweet alert -->
-    <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/plugins/sweet/sweetalert.min.js') }}"></script>
+{{--    <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>--}}
     
     <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
@@ -96,33 +98,61 @@
 
 @section('javascript')
     <script>
+        $('.edit').click(function () {
+            var id = $(this).data('id');
+            swal({
+                title: "您确定要修改这条任务状态吗",
+                text: "修改后执行人员不会显示此条任务",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((change) => {
+                if (!change) {
+                    throw null;
+                }
+                $.ajaxSetup({
+                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type:"get",
+                    url: '/admin/dailyTask/changeStatus/'+id,
+                    success:function (res) {
+                        if (res.status == 200){
+                            swal(res.message, "您已成功修改任务状态。", "success");
+                            location.reload()
+                            //location.reload();
+                        }else {
+                            swal(res.message, "请稍后重试。", "warning");
+                        }
+                    },
+                });
+                $.ajax();
+            })
+        });
         $('.delete').click(function () {
             var id = $(this).data('id');
             swal({
                 title: "您确定要删除这条信息吗",
                 text: "删除后将无法恢复，请谨慎操作！",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "删除",
-                cancelButtonText: "取消",
-                closeOnConfirm: false
-            }, function () {
-                $.ajaxSetup({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type:"delete",
-                    url: '/admin/dailyTasks/'+id,
-                    success:function (res) {
-                        if (res.status == 200){
-                            swal(res.message, "您已经永久删除了这条信息。", "success");
-                            location.reload();
-                        }else {
-                            swal(res.message, "请稍后重试。", "waring");
-                        }
-                    },
-                });
-                $.ajax();
-            });
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajaxSetup({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type:"delete",
+                        url: '/admin/dailyTasks/'+id,
+                        success:function (res) {
+                            if (res.status == 200){
+                                swal(res.message, "您已经永久删除了这条信息。", "success");
+                                location.reload();
+                            }else {
+                                swal(res.message, "请稍后重试。", "waring");
+                            }
+                        },
+                    });
+                    $.ajax();
+                }
+            })
         });
         /*$('#test').click(function () {
             layer.open({

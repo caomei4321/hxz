@@ -79,4 +79,19 @@ class DailyTasksController extends Controller
         return view('admin.dailyTask.showUserList', compact('dailyTasks', 'dailyTask'));
 
     }
+
+    public function changeStatus(DailyTask $dailyTask)
+    {
+        if ($dailyTask->status == 1) {
+            $dailyTask->status = 0;
+        } else {
+            $dailyTask->status = 1;
+        }
+        $dailyTask->save();
+
+        return response()->json([
+            'message' => '修改成功',
+            'status' => 200
+        ]);
+    }
 }
