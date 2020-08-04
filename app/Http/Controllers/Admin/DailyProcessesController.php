@@ -52,7 +52,6 @@ class DailyProcessesController extends Controller
 
     public function export(Request $request, Excel $excel)
     {
-        dd($request);
         $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
 
         $cellData = [
