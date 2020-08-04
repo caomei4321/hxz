@@ -59,7 +59,7 @@ class DailyProcessesController extends Controller
         if ($departmentId) {
             $users = DB::table('users')->where('department_id', $departmentId)->pluck('id');
             $dailyProcesses = $dailyProcess->whereBetween('created_at', [$startTime,$endTime])
-                ->whereIn('user_id',$users)->orderBy('created_at', 'desc')->get();
+                ->whereIn('user_id',$users)->orderBy('created_at', 'asc')->get();
         } else {
             $dailyProcesses = $dailyProcess->whereBetween('created_at', [$startTime,$endTime])
                 ->orderBy('created_at', 'desc')->get();

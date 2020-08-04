@@ -117,21 +117,20 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.dailyProcess.destroy'
                 ]);*/
                 Route::any('dailyProcesses', 'Admin\DailyProcessesController@index')->name('admin.dailyProcess.index');
-
                 Route::get('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@show')->name('admin.dailyProcess.show');
-                Route::get('dailyProcesses/export/excel', 'Admin\DailyProcessesController@export')->name('admin.dailyProcess.export');
-                /*Route::put('dailyProcesses/export/excel', function () {
-                    dd(111);
-                })->name('admin.dailyProcess.export');*/
-
-
+                Route::get('dailyProcesses/export/excel', 'Admin\DailyProcessesController@export')->name('admin.dailyProcess.export'); // 导出
                 Route::delete('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@destroy')->name('admin.dailyProcess.destroy');
+
                 Route::any('temporaryProcesses', 'Admin\TemporaryProcessesController@index')->name('admin.temporaryProcess.index');
                 Route::get('temporaryProcesses/{commonProcess}', 'Admin\TemporaryProcessesController@show')->name('admin.temporaryProcess.show');
                 Route::delete('temporaryProcesses/{commonProcess}', 'Admin\TemporaryProcessesController@destroy')->name('admin.temporaryProcess.destroy');
+                Route::get('temporaryProcesses/export/excel', 'Admin\TemporaryProcessesController@export')->name('admin.temporaryProcess.export'); // 导出
+
                 Route::any('specialProcesses', 'Admin\SpecialProcessesController@index')->name('admin.specialProcess.index');
                 Route::get('specialProcesses/{commonProcess}', 'Admin\SpecialProcessesController@show')->name('admin.specialProcess.show');
                 Route::delete('specialProcesses/{commonProcess}', 'Admin\SpecialProcessesController@destroy')->name('admin.specialProcess.destroy');
+                Route::get('specialProcesses/export/excel', 'Admin\SpecialProcessesController@export')->name('admin.specialProcess.export'); // 导出
+
 
                 // 临时任务
                 Route::get('temporaryTask/changeStatus/{commonTask}', 'Admin\TemporaryTasksController@changeStatus'); // 修改任务状态
