@@ -75,9 +75,14 @@
                                 <textarea id="content" name="content" class="form-control" required="" aria-required="true"></textarea>
                             </div>
                         </div>
+                        @foreach($userCategories as $k => $userCategory)
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">执行人：</label>
-                            @foreach($userCategories as $userCategory)
+                            @if($k == 0)
+                                <label class="col-sm-2 control-label">执行人：</label>
+                            @else
+                                <label class="col-sm-2 control-label"> </label>
+                            @endif
+
                                 @if(count($userCategory->users) == 0)
                                     <?php continue; ?>
                                 @endif
@@ -85,19 +90,26 @@
                                     <?php continue; ?>
                                 @endif
                                 <div class="col-sm-6">
-                                    <p>{{ $userCategory->name }}</p>
+                                    {{--<p>{{ $userCategory->name }}</p>--}}
+                                    <div class="row">
+                                        <div class="checkbox checkbox-inline">
+                                            <input type="checkbox" data-categoryId="{{$userCategory->id}}" id="inlineCheckboxCategory{{$userCategory->id}}" onclick="selectAll(this)">
+                                            <label for="inlineCheckboxCategory{{$userCategory->id}}"> {{ $userCategory->name }} </label>
+                                        </div>
+                                    </div>
                                     @foreach($userCategory->users->where('sign_type', 1) as $user)
                                         @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
                                             <?php continue; ?>
                                         @endif
                                         <div class="checkbox checkbox-inline">
-                                            <input type="checkbox" name="users[]" id="inlineCheckbox{{$user->id}}" value="{{ $user->id }}">
-                                            <label for="inlineCheckbox{{$user->id}}"> {{ $user->name }} </label>
+                                            <input type="checkbox" data-categoryId="{{$userCategory->id}}" name="users[]" id="inlineCheckboxUser{{$user->id}}" value="{{ $user->id }}">
+                                            <label for="inlineCheckboxUser{{$user->id}}"> {{ $user->name }} </label>
                                         </div>
                                     @endforeach
 
                                 </div>
-                            @endforeach
+                        </div>
+                        @endforeach
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -137,29 +149,22 @@
             $(selector).chosen(config[selector]);
         }
 
-        /*var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-        var url = $("#common_form").data('action');
-
-        $('#add_common').on('click', function(){
-            $.ajax({
-                type: "post",
-                dataType: "json",
-                url: url,
-                headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: $("#common_form").serialize(),
-                success: function (res) {
-                    if (res.status == 200) {
-                        parent.window.location.reload();
-                    } else {
-                        parent.layer.close(index);
+        /*
+         *  控制全选
+         * */
+        function selectAll(choiceBtn) {
+            var tag = document.getElementsByTagName("input");
+            var categoryId = choiceBtn.getAttribute("data-categoryId");
+            for (var i = 0; i<tag.length; i++) {
+                var obj = tag[i];
+                if (obj.type == 'checkbox') {
+                    var userCategoryId = obj.getAttribute("data-categoryId");
+                    if (categoryId == userCategoryId) {
+                        console.log(categoryId);
+                        obj.checked = choiceBtn.checked;
                     }
-                },
-                error: function (res) {
-
                 }
-            });
-            //parent.window.location.reload();
-            //parent.layer.close(index);
-        });*/
+            }
+        }
     </script>
 @endsection

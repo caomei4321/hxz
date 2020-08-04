@@ -7,6 +7,7 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Excel;
 
 class DailyProcessesController extends Controller
 {
@@ -47,5 +48,22 @@ class DailyProcessesController extends Controller
             'status'=> 200,
             'message' => '删除成功'
         ]);
+    }
+
+    public function export(Request $request, Excel $excel)
+    {
+        dd($request);
+        $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
+
+        $cellData = [
+            [11,22,33,44,55,66,77],
+            [11,22,33,44,55,66,78]
+        ];
+        $excel->create('日常任务处理记录导出', function ($excel) use ($cellData, $firstRow) {
+            $excel->sheet('first', function ($sheet) use ($cellData, $firstRow) {
+                $sheet->prependRow(1, $firstRow);
+                $sheet->row($cellData);
+            });
+        })->export('xls');
     }
 }

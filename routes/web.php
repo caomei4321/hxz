@@ -117,7 +117,14 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.dailyProcess.destroy'
                 ]);*/
                 Route::any('dailyProcesses', 'Admin\DailyProcessesController@index')->name('admin.dailyProcess.index');
+
                 Route::get('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@show')->name('admin.dailyProcess.show');
+                Route::get('dailyProcesses/export/excel', 'Admin\DailyProcessesController@export')->name('admin.dailyProcess.export');
+                /*Route::put('dailyProcesses/export/excel', function () {
+                    dd(111);
+                })->name('admin.dailyProcess.export');*/
+
+
                 Route::delete('dailyProcesses/{dailyProcess}', 'Admin\DailyProcessesController@destroy')->name('admin.dailyProcess.destroy');
                 Route::any('temporaryProcesses', 'Admin\TemporaryProcessesController@index')->name('admin.temporaryProcess.index');
                 Route::get('temporaryProcesses/{commonProcess}', 'Admin\TemporaryProcessesController@show')->name('admin.temporaryProcess.show');

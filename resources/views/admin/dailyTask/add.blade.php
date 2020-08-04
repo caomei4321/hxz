@@ -97,19 +97,23 @@
                                                 <?php continue; ?>
                                             @endif
                                             <div class="col-sm-6">
-                                                <p>{{ $userCategory->name }}</p>
+                                                {{--<p>{{ $userCategory->name }}</p>--}}
+                                                <div class="row">
+                                                    <div class="checkbox checkbox-inline">
+                                                        <input type="checkbox" data-categoryId="{{$userCategory['id']}}" id="inlineCheckboxCategory{{$userCategory->id}}" onclick="selectAll(this)">
+                                                        <label for="inlineCheckboxCategory{{$userCategory->id}}"> {{ $userCategory->name }} </label>
+                                                    </div>
+                                                </div>
                                                 @foreach($userCategory->users as $user)
                                                     @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
                                                         <?php continue; ?>
                                                     @endif
                                                     <div class="checkbox checkbox-inline">
-                                                        <input type="checkbox" name="users[]" id="inlineCheckbox{{$user->id}}" value="{{ $user->id }}">
-                                                        <label for="inlineCheckbox{{$user->id}}"> {{ $user->name }} </label>
+                                                        <input type="checkbox" data-categoryId="{{$userCategory->id}}" name="users[]" id="inlineCheckboxUser{{$user->id}}" value="{{ $user->id }}">
+                                                        <label for="inlineCheckboxUser{{$user->id}}"> {{ $user->name }} </label>
                                                     </div>
                                                 @endforeach
-
                                             </div>
-
                                     </div>
                             @endforeach
                                     <div class="form-group">
@@ -150,33 +154,27 @@
          for (var selector in config) {
              $(selector).chosen(config[selector]);
          }
-         $('.dataTables-example').dataTable({
+         /*$('.dataTables-example').dataTable({
              "lengthChange": false,
              "paging": false
-         });
-         /*var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-         var url = $("#daily_form").data('action');
-
-         $('#add_daily').on('click', function(){
-             $.ajax({
-                 type: "post",
-                 dataType: "json",
-                 url: url,
-                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                 data: $("#daily_form").serialize(),
-                 success: function (res) {
-                     if (res.status == 200) {
-                         parent.window.location.reload();
-                     } else {
-                         parent.layer.close(index);
-                     }
-                 },
-                 error: function (res) {
-
-                 }
-             });
-             //parent.window.location.reload();
-             //parent.layer.close(index);
          });*/
+
+         /*
+         *  控制全选
+         * */
+         function selectAll(choiceBtn) {
+             var tag = document.getElementsByTagName("input");
+             var categoryId = choiceBtn.getAttribute("data-categoryId");
+             for (var i = 0; i<tag.length; i++) {
+                 var obj = tag[i];
+                 if (obj.type == 'checkbox') {
+                      var userCategoryId = obj.getAttribute("data-categoryId");
+                      if (categoryId == userCategoryId) {
+                          console.log(categoryId);
+                          obj.checked = choiceBtn.checked;
+                      }
+                 }
+             }
+         }
     </script>
 @endsection
