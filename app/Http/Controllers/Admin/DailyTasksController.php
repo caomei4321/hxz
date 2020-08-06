@@ -25,7 +25,7 @@ class DailyTasksController extends Controller
         $departments = $department->all();
 
         $categoryId = $request->category_id;
-        if (!$categoryId) {
+        if ($categoryId == null) {
             $arr = array_column($userCategories->toArray(),"name", "id");
             $categoryId = array_search('物业', $arr);
         }

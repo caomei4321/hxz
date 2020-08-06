@@ -23,10 +23,16 @@ class TemporaryTasksController extends Controller
         $userCategories = $userCategory->all();
 
         $departments = $department->all();
+        $categoryId = $request->category_id;
+
+        if ($categoryId == null) {
+            $arr = array_column($userCategories->toArray(),"name", "id");
+            $categoryId = array_search('物业', $arr);
+        }
 
         $filter = [
             'department_id' => $request->department_id,
-            'category_id' => $request->category_id
+            'category_id' => $categoryId
         ];
 
         return view('admin.temporaryTask.add', compact('userCategories', 'departments', 'filter'));

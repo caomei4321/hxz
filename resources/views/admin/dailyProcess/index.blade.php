@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form method="get" action="{{ route('admin.dailyProcess.index') }}">
+                    <form method="get" action="" id="form">
                         <div class="form-group form-inline row text-left" id="data_5">
                             {{--<label class="font-noraml">范围选择</label>--}}
                             {{--{{ csrf_field() }}--}}
@@ -52,28 +52,8 @@
                                         <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
                                     @endforeach
                                 </select>
-                                <input type="submit" class="btn btn-primary" value="搜索">
-                            </div>
-
-                        </div>
-                    </form>
-                    <form method="get" action="{{ route('admin.dailyProcess.export') }}">
-                        <div class="form-group form-inline row text-left" id="data_5">
-                            {{--<label class="font-noraml">范围选择</label>--}}
-                            {{--{{ csrf_field() }}--}}
-                            <div class="input-daterange input-group" id="dc">
-                                <input type="text" class="input-sm form-control" name="start_time" value="{{ date("Y-m-d",time()) }}" />
-                                <span class="input-group-addon">到</span>
-                                <input type="text" class="input-sm form-control" name="end_time" value="{{ date("Y-m-d",time()) }}" />
-                            </div>
-                            <div class="form-group">
-                                <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
-                                    <option value="">选择部门</option>
-                                    @foreach($departments as $department)
-                                        <option value="{{ $department->id }}" hassubinfo="true">{{ $department->name }}</option>
-                                    @endforeach
-                                </select>
-                                <input type="submit" class="btn btn-primary" value="导出">
+                                <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
                             </div>
 
                         </div>
@@ -193,6 +173,16 @@
             "lengthChange": false,
             "paging": false
         });
+        function submitForm(type) {
+            var obj = $('#form');
+            if (type == 'export') {
+                obj.attr('action', "{{ route('admin.dailyProcess.export') }}");
+                obj.submit();
+            } else if (type == 'search') {
+                obj.attr('action', "{{ route('admin.dailyProcess.index') }}");
+                obj.submit();
+            }
+        }
         /*$('#test').click(function () {
             layer.open({
                 type: 2,

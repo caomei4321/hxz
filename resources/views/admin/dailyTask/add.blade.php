@@ -41,7 +41,7 @@
                             </div>
                             <div class="form-group">
                                 <select class="chosen-select" name="category_id" style="width: 200px;" tabindex="2" >
-                                    <option value="">选择分类</option>
+                                    <option value="0">选择分类</option>
                                     @foreach($userCategories as $category)
                                         <option value="{{ $category->id }}" hassubinfo="true" @if( $filter['category_id'] == $category->id) selected @endif>{{ $category->name }}</option>
                                     @endforeach
@@ -100,19 +100,32 @@
                                                 {{--<p>{{ $userCategory->name }}</p>--}}
                                                 <div class="row">
                                                     <div class="checkbox checkbox-inline">
-                                                        <input type="checkbox" data-categoryId="{{$userCategory['id']}}" id="inlineCheckboxCategory{{$userCategory->id}}" onclick="selectAll(this)">
+                                                        <input type="checkbox" data-categoryId="{{$userCategory['id']}}" id="inlineCheckboxCategory{{$userCategory->id}}" onclick="selectAllForCategory(this)">
                                                         <label for="inlineCheckboxCategory{{$userCategory->id}}"> {{ $userCategory->name }} </label>
                                                     </div>
                                                 </div>
-                                                @foreach($userCategory->users as $user)
-                                                    @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
-                                                        <?php continue; ?>
-                                                    @endif
-                                                    <div class="checkbox checkbox-inline">
-                                                        <input type="checkbox" data-categoryId="{{$userCategory->id}}" name="users[]" id="inlineCheckboxUser{{$user->id}}" value="{{ $user->id }}">
-                                                        <label for="inlineCheckboxUser{{$user->id}}"> {{ $user->name }} </label>
+                                                @foreach($departments as $department)
+                                                    <div class="col-sm-12">
+                                                        <div class="row">
+                                                            <div class="checkbox checkbox-inline">
+                                                                <input type="checkbox" data-categoryId="{{$userCategory['id']}}" data-departmentId="{{$department->id}}" id="inlineCheckboxDepartment{{$department->id}}AndCategory{{$userCategory->id}}" onclick="selectAllForDepartment(this)">
+                                                                <label for="inlineCheckboxDepartment{{$department->id}}AndCategory{{$userCategory->id}}"> {{ $department->name }} </label>
+                                                            </div>
+                                                        </div>
+                                                        @foreach($userCategory->users as $user)
+                                                            @if($filter['department_id'] && $user->department_id != $filter['department_id'] )
+                                                                <?php continue; ?>
+                                                            @endif
+                                                            @if($user->department_id == $department->id)
+                                                                    <div class="checkbox checkbox-inline">
+                                                                        <input type="checkbox" data-categoryId="{{$userCategory->id}}" data-departmentId="{{$department->id}}" name="users[]" id="inlineCheckboxUser{{$user->id}}" value="{{ $user->id }}">
+                                                                        <label for="inlineCheckboxUser{{$user->id}}"> {{ $user->name }} </label>
+                                                                    </div>
+                                                            @endif
+                                                        @endforeach
                                                     </div>
                                                 @endforeach
+
                                             </div>
                                     </div>
                             @endforeach
@@ -162,7 +175,7 @@
          /*
          *  控制全选
          * */
-         function selectAll(choiceBtn) {
+         function selectAllForCategory(choiceBtn) {
              var tag = document.getElementsByTagName("input");
              var categoryId = choiceBtn.getAttribute("data-categoryId");
              for (var i = 0; i<tag.length; i++) {
@@ -173,6 +186,22 @@
                           console.log(categoryId);
                           obj.checked = choiceBtn.checked;
                       }
+                 }
+             }
+         }
+         function selectAllForDepartment(choiceBtn) {
+             var tag = document.getElementsByTagName("input");
+             var categoryId = choiceBtn.getAttribute("data-categoryId");
+             var departmentId = choiceBtn.getAttribute("data-departmentId");
+             for (var i = 0; i<tag.length; i++) {
+                 var obj = tag[i];
+                 if (obj.type == 'checkbox') {
+                     var userCategoryId = obj.getAttribute("data-categoryId");
+                     var userDepartmentId = obj.getAttribute("data-departmentId");
+                     if (categoryId == userCategoryId && departmentId == userDepartmentId) {
+                         console.log(categoryId);
+                         obj.checked = choiceBtn.checked;
+                     }
                  }
              }
          }
