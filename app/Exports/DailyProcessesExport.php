@@ -4,7 +4,6 @@ namespace App\Exports;
 use App\Models\DailyProcess;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use mysql_xdevapi\Collection;
 
 class DailyProcessesExport implements FromCollection
 {
@@ -21,7 +20,7 @@ class DailyProcessesExport implements FromCollection
 
     public function collection()
     {
-        return new Collection($this->createData());
+        return collect($this->createData());
     }
 
     public function createData()
