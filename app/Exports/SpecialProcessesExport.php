@@ -1,15 +1,16 @@
 <?php
 namespace App\Exports;
 
-use App\Models\DailyProcess;
+use App\Models\CommonProcess;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class DailyProcessesExport implements FromCollection
+class SpecialProcessesExport implements FromCollection
 {
     private $startTime;
     private $endTime;
     private $departmentId;
+
     public function __construct($startTime, $endTime, $departmentId)
     {
         $this->startTime = $startTime;
@@ -17,31 +18,32 @@ class DailyProcessesExport implements FromCollection
         $this->departmentId = $departmentId;
     }
 
-
     public function collection()
     {
         return collect($this->createData());
     }
 
-    public function createData()
+    private function createData()
     {
         if ($this->departmentId) {
             $users = DB::table('users')->where('department_id', $this->departmentId)->pluck('id');
-            $dailyProcesses = DailyProcess::whereBetween('created_at', [$this->startTime,$this->endTime])
-                ->whereIn('user_id',$users)->orderBy('created_at', 'asc')->get();
+            $commonProcesses = CommonProcess::whereBetween('up_at',[$this->startTime, $this->endTime])->whereIn('user_id', $users);
         } else {
-            $dailyProcesses = DailyProcess::whereBetween('created_at', [$this->startTime,$this->endTime])
-                ->orderBy('created_at', 'desc')->get();
+            $commonProcesses =CommonProcess::whereBetween('up_at',[$this->startTime, $this->endTime]);
         }
+
+        $categories = DB::table('common_tasks')->where('category', '专项任务')->pluck('id');
+        $commonProcesses = $commonProcesses->whereIn('common_id', $categories)->orderBy('created_at', 'asc')->get();
+
+        $cellData = [];
 
         $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
 
-        $cellData = [];
         array_push($cellData, $firstRow);
 
-        foreach ($dailyProcesses as $value) {
-            $createdAt = $value->created_at;
-            $title = $value->dailyTask->title;
+        foreach ($commonProcesses as $value) {
+            $createdAt = $value->up_at;
+            $title = $value->commonTask->title;
             $userName = $value->user->name;
             $departmentName = $value->user->department->name;
             $userTel = $value->user->phone;
@@ -51,9 +53,9 @@ class DailyProcessesExport implements FromCollection
             $data = [
                 $createdAt, $title, $userName, $departmentName, $userTel, $address, $description
             ];
-
             array_push($cellData, $data);
         }
+
         return $cellData;
     }
 }

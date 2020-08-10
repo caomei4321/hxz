@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportWithDrawing;
 use App\Models\DailyProcess;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -56,10 +57,6 @@ class DailyProcessesController extends Controller
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
-
-
-        /*$dd = new DailyProcessesExport($startTime, $endTime, $departmentId);
-        dd($dd->collection());*/
 
         return Excel::download(new DailyProcessesExport($startTime, $endTime, $departmentId), '日常任务处理记录导出.xls');
     }

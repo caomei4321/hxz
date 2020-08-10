@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SpecialProcessesExport;
 use App\Models\CommonProcess;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class SpecialProcessesController extends Controller
 {
@@ -56,46 +58,12 @@ class SpecialProcessesController extends Controller
         ]);
     }
 
-    public function export(Request $request, Excel $excel, CommonProcess $commonProcess)
+    public function export(Request $request)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
-        if ($departmentId) {
-            $users = DB::table('users')->where('department_id', $departmentId)->pluck('id');
-            $commonProcesses =$commonProcess->whereBetween('up_at',[$startTime, $endTime])->whereIn('user_id', $users);
-        } else {
-            $commonProcesses =$commonProcess->whereBetween('up_at',[$startTime, $endTime]);
-        }
-
-        $categories = DB::table('common_tasks')->where('category', '专项任务')->pluck('id');
-        $commonProcesses = $commonProcesses->whereIn('common_id', $categories)->orderBy('created_at', 'asc')->get();
-
-        $cellData = [];
-
-        $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
-
-        foreach ($commonProcesses as $value) {
-            $createdAt = $value->up_at;
-            $title = $value->commonTask->title;
-            $userName = $value->user->name;
-            $departmentName = $value->user->department->name;
-            $userTel = $value->user->phone;
-            $address = $value->address;
-            $description = $value->description;
-
-            $data = [
-                $createdAt, $title, $userName, $departmentName, $userTel, $address, $description
-            ];
-            array_push($cellData, $data);
-        }
-
-        $excel->create('专项任务处理记录导出', function ($excel) use ($cellData, $firstRow) {
-            $excel->sheet('first', function ($sheet) use ($cellData, $firstRow) {
-                $sheet->prependRow(1, $firstRow);
-                $sheet->rows($cellData);
-            });
-        })->export('xls');
+        return Excel::download(new SpecialProcessesExport($startTime, $endTime, $departmentId), '专项任务处理记录导出.xls');
     }
 }
