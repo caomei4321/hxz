@@ -58,8 +58,8 @@ class DailyProcessesController extends Controller
         $departmentId =  $request->department_id ? $request->department_id : '';
 
 
-        $dd = new DailyProcessesExport($startTime, $endTime, $departmentId);
-        dd($dd->collection());
+        /*$dd = new DailyProcessesExport($startTime, $endTime, $departmentId);
+        dd($dd->collection());*/
 
         return Excel::download(new DailyProcessesExport($startTime, $endTime, $departmentId), '日常任务处理记录导出.xls');
     }
