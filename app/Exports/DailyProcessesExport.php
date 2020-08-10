@@ -4,12 +4,15 @@ namespace App\Exports;
 use App\Models\DailyProcess;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class DailyProcessesExport implements FromCollection
+class DailyProcessesExport implements FromCollection, WithDrawings
 {
     private $startTime;
     private $endTime;
     private $departmentId;
+    private $path;
     public function __construct($startTime, $endTime, $departmentId)
     {
         $this->startTime = $startTime;
@@ -23,6 +26,15 @@ class DailyProcessesExport implements FromCollection
         return collect($this->createData());
     }
 
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setPath(public_path($this->path));
+        $drawing->setHeight(60);
+
+        return $drawing;
+    }
+
     public function createData()
     {
         if ($this->departmentId) {
@@ -34,7 +46,7 @@ class DailyProcessesExport implements FromCollection
                 ->orderBy('created_at', 'desc')->get();
         }
 
-        $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
+        $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述', '图片'];
 
         $cellData = [];
         array_push($cellData, $firstRow);
@@ -51,6 +63,13 @@ class DailyProcessesExport implements FromCollection
             $data = [
                 $createdAt, $title, $userName, $departmentName, $userTel, $address, $description
             ];
+            foreach(json_decode($value->photo) as $path) {
+                if ($path) {
+                    $this->path = $path;
+                    array_push($data, $this->drawings());
+                }
+            }
+
 
             array_push($cellData, $data);
         }
