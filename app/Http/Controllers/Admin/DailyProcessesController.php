@@ -57,6 +57,10 @@ class DailyProcessesController extends Controller
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
+
+        $dd = new DailyProcessesExport($startTime, $endTime, $departmentId);
+        dd($dd->collection());
+
         return Excel::download(new DailyProcessesExport($startTime, $endTime, $departmentId), '日常任务处理记录导出.xls');
     }
 }
