@@ -7,7 +7,8 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Excel;
+use App\Exports\DailyProcessesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DailyProcessesController extends Controller
 {
@@ -50,47 +51,12 @@ class DailyProcessesController extends Controller
         ]);
     }
 
-    public function export(Request $request, Excel $excel, DailyProcess $dailyProcess)
+    public function export(Request $request)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
-        if ($departmentId) {
-            $users = DB::table('users')->where('department_id', $departmentId)->pluck('id');
-            $dailyProcesses = $dailyProcess->whereBetween('created_at', [$startTime,$endTime])
-                ->whereIn('user_id',$users)->orderBy('created_at', 'asc')->get();
-        } else {
-            $dailyProcesses = $dailyProcess->whereBetween('created_at', [$startTime,$endTime])
-                ->orderBy('created_at', 'desc')->get();
-        }
-
-        $cellData = [];
-
-        foreach ($dailyProcesses as $value) {
-            $createdAt = $value->created_at;
-            $title = $value->dailyTask->title;
-            $userName = $value->user->name;
-            $departmentName = $value->user->department->name;
-            $userTel = $value->user->phone;
-            $address = $value->address;
-            $description = $value->description;
-
-            $data = [
-                $createdAt, $title, $userName, $departmentName, $userTel, $address, $description
-            ];
-
-            array_push($cellData, $data);
-        }
-
-
-        $firstRow = ['时间', '任务标题', '执行人', '所属单位', '联系方式', '处理地点', '处理描述'];
-
-        $excel->create('日常任务处理记录导出', function ($excel) use ($cellData, $firstRow) {
-            $excel->sheet('first', function ($sheet) use ($cellData, $firstRow) {
-                $sheet->prependRow(1, $firstRow);
-                $sheet->rows($cellData);
-            });
-        })->export('xls');
+        return Excel::download(new DailyProcessesExport($startTime, $endTime, $departmentId), '日常任务处理记录导出.xls');
     }
 }
