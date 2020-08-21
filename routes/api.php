@@ -37,6 +37,9 @@ $api->version('v1', [
     $api->delete('authorizations/destroy', 'AuthorizationsController@delete')
         ->name('api.authorizations.delete');
 
+    $api->post('storeUser', 'UserMessageController@UserMessageStore');
+    $api->get('getCategoryAndDepartment', 'UserMessageController@getCategoryAndDepartment');
+
     //$api->post('wuthorizations', 'AuthorizationsController@weappStore');
     $api->get('categories', 'CategoryController@categories');  //责任清单分类
     $api->group(['middleware' => 'refresh.token'], function ($api) {
