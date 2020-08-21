@@ -18,7 +18,7 @@ class UserMessageController extends Controller
             return $this->message('手机号已存在', 'error');
         }
         $data = $request->only(['name', 'phone', 'age',  'category_id', 'department_id']);
-        $data['password'] = Hash::make(substr($request->phone, 6));
+        $data['password'] = Hash::make(substr($request->phone, 5));
         $user->fill($data);
         $user->save();
 
