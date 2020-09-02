@@ -17,7 +17,16 @@ class UserMessageController extends Controller
         if ($user->where('phone', $request->phone)->first()) {
             return $this->message('手机号已存在', 'error');
         }
-        $data = $request->only(['name', 'phone', 'age',  'category_id', 'department_id']);
+        if ($request->department_id) {
+            $data = $request->only(['name', 'phone', 'age',  'category_id', 'department_id']);
+        } else {
+            $department = new Department();
+            $department->name = $request->department_name;
+            $department->save();
+            $data = $request->only(['name', 'phone', 'age',  'category_id']);
+            $data['department_id'] = $department->id;
+        }
+        //$data = $request->only(['name', 'phone', 'age',  'category_id', 'department_id']);
         $data['password'] = Hash::make(substr($request->phone, 5));
         $user->fill($data);
         $user->save();
