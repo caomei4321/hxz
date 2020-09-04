@@ -24,9 +24,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 //        Category::observe(CategoryObserver::class);
-        Matter::observe(MatterObserver::class);
-        News::observe(NewsObserver::class);
-        User::observe(UserObserver::class);
+        //Matter::observe(MatterObserver::class);
+        //News::observe(NewsObserver::class);
+        //User::observe(UserObserver::class);
     }
 
     /**
