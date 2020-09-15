@@ -28,9 +28,9 @@ class UsersController extends Controller
             if ($request->department_id) {
                 $builder = $builder->where('department_id', $request->department_id);
             }
-            $users = $builder->paginate(15);;
+            $users = $builder->orderBy('department_id')->paginate(15);;
         } else {
-            $users = $user->paginate(15);
+            $users = $user->orderBy('department_id')->paginate(15);
         }
         $filter = [
             'name' => $request->name,
