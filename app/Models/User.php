@@ -95,4 +95,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(HandoverRecord::class, 'recipient_user', 'id');
     }
+
+    public function appointmentRecord()
+    {
+        return $this->hasMany(AppointmentRecord::class);
+    }
 }

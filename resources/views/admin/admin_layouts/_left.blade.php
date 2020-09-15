@@ -31,6 +31,12 @@
                 <a class="J_menuItem" href="{{ route('admin.department.index') }}"><i class="fa fa-users"></i> <span class="nav-label">部门信息</span></a>
             </li>
             <li>
+                <a class="J_menuItem" href="{{ route('admin.station.index') }}"><i class="fa fa-users"></i> <span class="nav-label">岗亭信息</span></a>
+            </li>
+            <li>
+                <a class="J_menuItem" href="{{ route('admin.appointmentRecord.index') }}"><i class="fa fa-users"></i> <span class="nav-label">预约记录</span></a>
+            </li>
+            <li>
                 <a class="J_menuItem" href="{{ route('admin.message.index') }}"><i class="fa fa-desktop"></i> <span class="nav-label">通知管理</span></a>
             </li>
             <li>

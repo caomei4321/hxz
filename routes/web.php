@@ -83,6 +83,27 @@ Route::group(['prefix' => 'admin'], function () {
                     'show' => 'admin.department.show',
                     'destroy' => 'admin.department.destroy'
                 ]);
+                // 岗亭信息
+                Route::resource('stations', 'Admin\StationsController')->names([
+                    'index' => 'admin.station.index',
+                    'create' => 'admin.station.create',
+                    'edit' => 'admin.station.edit',
+                    'update' => 'admin.station.update',
+                    'store' => 'admin.station.store',
+                    'show' => 'admin.station.show',
+                    'destroy' => 'admin.station.destroy'
+                ]);
+                // 预约管理
+                Route::get('appointmentRecords/changeStatus/{appointmentRecord}', 'Admin\AppointmentRecordsController@changeStatus'); // 修改预约状态
+                Route::resource('appointmentRecords', 'Admin\AppointmentRecordsController')->names([
+                    'index' => 'admin.appointmentRecord.index',
+                    'create' => 'admin.appointmentRecord.create',
+                    'edit' => 'admin.appointmentRecord.edit',
+                    'update' => 'admin.appointmentRecord.update',
+                    'store' => 'admin.appointmentRecord.store',
+                    'show' => 'admin.appointmentRecord.show',
+                    'destroy' => 'admin.appointmentRecord.destroy'
+                ]);
 
                 // 通知消息
                 Route::resource('messages', 'Admin\MessagesController', ['except' => ['edit', 'update']])->names([
