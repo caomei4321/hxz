@@ -14,11 +14,33 @@ use Maatwebsite\Excel\Excel;
 
 class UsersController extends Controller
 {
-    public function index(User $user)
+    public function index(User $user, Department $department, Request $request)
     {
-        $users = $user->paginate(15);
+        if ($request->name || $request->phone || $request->department_id) {
+            $builder = User::query();
+            if ($request->name) {
+                $name = '%'.$request->name.'%';
+                $builder = $builder->where('name', 'like', $name);
+            }
+            if ($request->phone) {
+                $builder = $builder->where('phone', $request->phone);
+            }
+            if ($request->department_id) {
+                $builder = $builder->where('department_id', $request->department_id);
+            }
+            $users = $builder->paginate(15);;
+        } else {
+            $users = $user->paginate(15);
+        }
+        $filter = [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'department_id' => $request->department_id
+        ];
 
-        return view('admin.user.index', compact('users'));
+        $departments = $department->all();
+
+        return view('admin.user.index', compact('users', 'departments', 'filter'));
     }
 
     public function create(User $user, UserCategory $userCategory, Department $department)
