@@ -16,10 +16,13 @@ class TemporaryTasksController extends Controller
         $commonTasks = $commonTask
                         ->where('category', '临时任务')
                         ->with(['users' => function($query) {
-                                                $query->with('department')->groupBy('department_id');
+                                                $query->with('department');
                                             }])
                         ->orderBy('id', 'desc')->paginate(15);
 
+        /*foreach ($commonTasks as $task) {
+            dd($task->users->groupBy('department_id'));
+        }*/
         return view('admin.temporaryTask.index', compact('commonTasks'));
     }
 

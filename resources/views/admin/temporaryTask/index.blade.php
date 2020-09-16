@@ -55,8 +55,10 @@
                                 <td>{{ $commonTask->content }}</td>
                                 <td>{{ $commonTask->category }}</td>
                                 <td>
-                                    @foreach($commonTask->users as $user)
-                                    {{ $user->department->name.'；' }}
+                                    @foreach($commonTask->users->groupBy('department_id') as $users)
+                                        @for($i=0; $i<1; $i++)
+                                            {{ $users[0]->department->name.'；' }}
+                                        @endfor
                                     @endforeach
                                 </td>
                                 @if($commonTask->status == 1)
