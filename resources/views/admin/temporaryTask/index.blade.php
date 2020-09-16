@@ -41,6 +41,7 @@
                             <th>标题</th>
                             <th>任务说明</th>
                             <th>任务分类</th>
+                            <th>小区名称</th>
                             <th>任务状态</th>
                             <th>添加时间</th>
                             <th>操作</th>
@@ -53,6 +54,11 @@
                                 <td>{{ $commonTask->title }}</td>
                                 <td>{{ $commonTask->content }}</td>
                                 <td>{{ $commonTask->category }}</td>
+                                <td>
+                                    @foreach($commonTask->users as $user)
+                                    {{ $user->department->name.'；' }}
+                                    @endforeach
+                                </td>
                                 @if($commonTask->status == 1)
                                     <td>进行中</td>
                                 @elseif($commonTask->status == 0)
@@ -73,6 +79,7 @@
                             <th>标题</th>
                             <th>任务说明</th>
                             <th>任务分类</th>
+                            <th>小区名称</th>
                             <th>任务状态</th>
                             <th>添加时间</th>
                             <th>操作</th>

@@ -13,7 +13,13 @@ class TemporaryTasksController extends Controller
 {
     public function index(CommonTask $commonTask)
     {
-        $commonTasks = $commonTask->where('category', '临时任务')->orderBy('id', 'desc')->paginate(15);
+        $commonTasks = $commonTask
+                        ->where('category', '临时任务')
+                        ->with(['users' => function($query) {
+                                                $query->with('department')->groupBy('department_id');
+                                            }])
+                        ->orderBy('id', 'desc')->paginate(15);
+
         return view('admin.temporaryTask.index', compact('commonTasks'));
     }
 
@@ -76,7 +82,11 @@ class TemporaryTasksController extends Controller
         ]);
     }
 
-    // 修改任务状态
+    /*
+     * 修改任务状态
+     *
+     * status: 1 表示进行中； 0 表示已完结
+     * */
     public function changeStatus(CommonTask $commonTask)
     {
         if ($commonTask->status == 1) {
