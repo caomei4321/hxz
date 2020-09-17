@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="#"><button class="btn btn-info " type="button" id="add_message"><i class="fa fa-paste"></i> 发布通知</button>
+                    <a href="{{ route('admin.message.create') }}"><button class="btn btn-info " type="button" id="add_message"><i class="fa fa-paste"></i> 发布通知</button>
                     </a>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
@@ -41,6 +41,7 @@
                             <th>标题</th>
                             <th>内容</th>
                             <th>已读人员</th>
+                            <th>未读人员</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -53,6 +54,11 @@
                                 <td>{{ $message->content }}</td>
                                 <td>
                                     @foreach($message->users()->wherePivot('status', 1)->get() as $user)
+                                        {{ $user->name ? $user->name.';' : '' }}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($message->users()->wherePivot('status', 0)->get() as $user)
                                         {{ $user->name ? $user->name.';' : '' }}
                                     @endforeach
                                 </td>
@@ -70,6 +76,7 @@
                             <th>标题</th>
                             <th>内容</th>
                             <th>已读人员</th>
+                            <th>未读人员</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -122,7 +129,7 @@
                 $.ajax();
             });
         });
-        $('#add_message').click(function () {
+        /*$('#add_message').click(function () {
             layer.open({
                 type: 2,
                 area: ['700px', '450px'],
@@ -130,6 +137,6 @@
                 maxmin: true,
                 content: "{{ route('admin.message.create') }}"
             });
-        });
+        });*/
     </script>
 @endsection

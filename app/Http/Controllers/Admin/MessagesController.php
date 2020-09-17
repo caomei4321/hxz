@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Department;
 use App\Models\Message;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
@@ -12,15 +13,17 @@ class MessagesController extends Controller
 {
     public function index(Message $message)
     {
-        $messages = $message->paginate(15);
+        $messages = $message->orderBy('id', 'desc')->paginate(15);
         return view('admin.message.index', compact('messages'));
     }
 
-    public function create(UserCategory $userCategory)
+    public function create(UserCategory $userCategory, Department $department)
     {
         $userCategories = $userCategory->all();
 
-        return view('admin.message.add', compact('userCategories'));
+        $departments = $department->all();
+
+        return view('admin.message.add', compact('userCategories', 'departments'));
     }
 
     public function store(Request $request,Message $message)
