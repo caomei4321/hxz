@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Excel;
 
@@ -87,13 +88,22 @@ class UsersController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->event()->count()>0 || $user->dailyTask()->count()>0 || $user->commonTask()->count()>0) {
-            return response()->json([
-                'status' => 400,
-                'message' => '请删除当前用户下的所有数据'
-            ]);
-        }
-        $user->delete();
+        //$user->event()->delete();
+        DB::beginTransaction();
+        try{
+            $user->dailyProcess()->delete(); // 删除日常任务处理记录
+            $user->dailyTask()->detach();  // 删除日常任务
+            $user->commonTask()->detach(); // 删除临时任务和专项任务
+            $user->sign()->delete();  // 删除签到记录
+            $user->handoverSender()->delete();   // 删除交班记录
+            $user->handoverRecipient()->delete();   // 删除接班记录
+            $user->event()->delete();
+            $user->message()->detach();
+            $user->delete();
+            } catch (\PDOException $e) {
+                DB::rollback();
+            }
+        DB::commit();
 
         return response()->json([
             'status'=> 200,
