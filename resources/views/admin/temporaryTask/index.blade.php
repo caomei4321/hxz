@@ -89,7 +89,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $commonTasks->links() }}
+                {{ $commonTasks->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

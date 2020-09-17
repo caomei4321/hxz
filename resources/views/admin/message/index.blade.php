@@ -76,7 +76,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $messages->links() }}
+                {{ $messages->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

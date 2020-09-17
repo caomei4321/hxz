@@ -75,7 +75,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $handoverRecords->links() }}
+                {{ $handoverRecords->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

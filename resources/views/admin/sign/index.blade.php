@@ -61,13 +61,14 @@
                         <tr>
                             <th>ID</th>
                             <th>姓名</th>
+                            <th>小区</th>
                             <th>签到时间</th>
                             <th>签到类型</th>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
-                {{ $signs->links() }}
+                {{ $signs->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

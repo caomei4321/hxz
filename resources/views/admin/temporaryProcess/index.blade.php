@@ -99,7 +99,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $commonProcesses->appends($filter)->links() }}
+                {{ $commonProcesses->appends($filter)->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>
