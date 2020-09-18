@@ -77,7 +77,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $dailyTasks->links() }}
+                {{ $dailyTasks->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

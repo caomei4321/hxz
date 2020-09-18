@@ -66,7 +66,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $departments->links() }}
+                {{ $departments->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

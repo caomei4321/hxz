@@ -36,6 +36,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>小区</th>
                             <th>上报人</th>
                             <th>事件描述</th>
                             <th>状态</th>
@@ -47,6 +48,7 @@
                         @foreach($events as $event)
                         <tr class="gradeC">
                             <td>{{ $event->id }}</td>
+                            <td>{{ $event->user->department->name }}</td>
                             <td>{{ $event->user->name }}</td>
                             <td>{{ $event->description }}</td>
                             <td>{{ $event->status ? '处理完成':'未处理完成'}}</td>
@@ -61,6 +63,7 @@
                         <tfoot>
                         <tr>
                             <th>ID</th>
+                            <th>小区</th>
                             <th>上报人</th>
                             <th>事件描述</th>
                             <th>状态</th>
@@ -70,7 +73,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{--{{ $users->links() }}--}}
+                {{ $events->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>

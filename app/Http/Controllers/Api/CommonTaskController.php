@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CommonTask;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Handlers\ImageUploadHandler;
@@ -56,7 +58,19 @@ class CommonTaskController extends Controller
             'up_at' => date('Y-m-d H:i:s',time())
         ];
 
-        $user->commonTask()->updateExistingPivot($request->common_id, $data);
+        $status = $user->commonTask()->updateExistingPivot($request->common_id, $data);
+
+        if ($status) {
+            $commonTask = CommonTask::find($request->common_id);
+            // 未完成的任务的数量
+            $count = $commonTask->users()->wherePivot('up_at', '=', null)->count();
+
+            // 所有人都完成任务后修改任务状态为已完结
+            if ($count == 0) {
+                $commonTask->status = 0;
+                $commonTask->save();
+            }
+        }
 
         return $this->success([
             'message' => '上报成功'

@@ -5,6 +5,8 @@
     <link href="{{ asset('assets/admin/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="{{ asset('assets/admin/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('assets/admin/css/plugins/chosen/chosen.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -32,7 +34,24 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <button class="btn btn-info " id="add_user" type="button"><i class="fa fa-paste"></i> 添加人员</button>
+                    <form action="{{ route('admin.user.index') }}" method="GET">
+                        <div class="col-sm-2" style="display: inline-block">
+                            <input name="name" id="name" type="text" placeholder="姓名" class="form-control" value="{{ old('name', $filter['name']) }}">
+                        </div>
+                        <div class="col-sm-2" style="display: inline-block">
+                            <input name="phone" id="phone" type="text" placeholder="手机号" class="form-control" value="{{ old('phone', $filter['phone']) }}">
+                        </div>
+                        <div class="col-sm-2" style="display: inline-block">
+                            <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
+                                <option value="">选择部门</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button class="btn btn-info" type="submit" style="display: inline-block"><i class="fa fa-paste"></i>查找</button>
+                        <button class="btn btn-info " id="add_user" type="button"><i class="fa fa-paste"></i> 添加人员</button>
+                    </form>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
@@ -78,7 +97,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $users->links() }}
+                {{ $users->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>
@@ -92,10 +111,31 @@
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
+    <!-- Chosen -->
+    <script src="{{ asset('assets/admin/js/plugins/chosen/chosen.jquery.js') }}"></script>
 @endsection
 
 @section('javascript')
     <script>
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': {
+                allow_single_deselect: true
+            },
+            '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            },
+            '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            },
+            '.chosen-select-width': {
+                width: "95%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
         $('.delete').click(function () {
             var id = $(this).data('id');
             swal({

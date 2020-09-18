@@ -32,12 +32,13 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
-                    </a>
+                    {{--<a href="#"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
+                    </a>--}}
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>小区</th>
                             <th>交班人</th>
                             <th>接班人</th>
                             <th>交班内容</th>
@@ -49,6 +50,7 @@
                         @foreach($handoverRecords as $handoverRecord)
                             <tr class="gradeC">
                                 <td>{{ $handoverRecord->id }}</td>
+                                <td>{{ $handoverRecord->sendUser->department->name }}</td>
                                 <td>{{ $handoverRecord->sendUser->name }}</td>
                                 <td>{{ $handoverRecord->recipientUser->name }}</td>
                                 <td>{{ $handoverRecord->content }}</td>
@@ -63,6 +65,7 @@
                         <tfoot>
                         <tr>
                             <th>ID</th>
+                            <th>小区</th>
                             <th>交班人</th>
                             <th>接班人</th>
                             <th>交班内容</th>
@@ -72,7 +75,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $handoverRecords->links() }}
+                {{ $handoverRecords->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>
