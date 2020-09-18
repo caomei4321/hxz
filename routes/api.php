@@ -83,6 +83,12 @@ $api->version('v1', [
         $api->get('handoverRecord/readHandover', 'HandoverRecordController@readHandover');
         //  使用手册
         $api->get('manual/manualList', 'ManualController@index');
+        //  岗亭信息
+        $api->get('appointment/stations', 'AppointmentController@getStations');
+        //  提交预约
+        $api->post('appointment/storeAppointment', 'AppointmentController@storeAppointment');
+        //  预约记录
+        $api->get('appointment/appointmentRecord', 'AppointmentController@getRecord');
 
 
         $api->get('user', 'RepairsController@thisUser');

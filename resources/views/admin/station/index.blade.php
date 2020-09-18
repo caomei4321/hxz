@@ -90,7 +90,7 @@
             var id = $(this).data('id');
             swal({
                 title: "您确定要删除这条信息吗",
-                text: "删除后将无法恢复，请谨慎操作！",
+                text: "此操作会删除对应的预约记录,删除后将无法恢复，请谨慎操作！",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",

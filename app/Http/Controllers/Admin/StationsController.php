@@ -14,12 +14,12 @@ class StationsController extends Controller
         return view('admin.station.index', compact('stations'));
     }
 
-    /*public function create(Station $station)
+    public function create(Station $station)
     {
         return view('admin.station.create_and_edit', compact('station'));
-    }*/
+    }
 
-    /*public function store(Request $request, Station $station)
+    public function store(Request $request, Station $station)
     {
         $station->fill($request->only(['name']));
         $station->save();
@@ -28,7 +28,7 @@ class StationsController extends Controller
             'status'=> 200,
             'message' => '添加成功'
         ]);
-    }*/
+    }
 
     public function edit(Station $station)
     {
@@ -46,12 +46,8 @@ class StationsController extends Controller
 
     public function destroy(Station $station)
     {
-        /*if ($station->users()->count() > 0) {
-            return response()->json([
-                'status' => 400,
-                'message' => '请先删除当前部门下的用户'
-            ]);
-        }*/
+        $station->appointmentRecord()->delete();
+        $station->delete();
         $station->delete();
         return response()->json([
             'status' => 200,
