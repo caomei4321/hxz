@@ -24,7 +24,10 @@ class HandoverRecordController extends Controller
     public function getUsers(User $user)
     {
         $thisUser = Auth()->guard('api')->user();
-        $users = $user->where('department_id', $thisUser->department_id)->get();
+        $users = $user->where([
+            ['department_id', '=', $thisUser->department_id],
+            ['sign_type', '=', 1]
+        ])->get();
 
         return $this->message($users);
     }
