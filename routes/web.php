@@ -35,6 +35,33 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('count', 'Admin\CountsController@index')->name('admin.counts.index');
 
             //Route::group(['middleware' => 'checkPermission'], function () {
+                Route::resource('administrators', 'Admin\AdminsController')->names([
+                    'index' => 'admin.administrators.index',
+                    'store' => 'admin.administrators.store',
+                    'create' => 'admin.administrators.create',
+                    'destroy' => 'admin.administrators.destroy',
+                    'update' => 'admin.administrators.update',
+                    'show' => 'admin.administrators.show',
+                    'edit' => 'admin.administrators.edit',
+                ]);
+                Route::resource('permissions', 'Admin\PermissionsController')->names([
+                    'index' => 'admin.permissions.index',
+                    'store' => 'admin.permissions.store',
+                    'create' => 'admin.permissions.create',
+                    'destroy' => 'admin.permissions.destroy',
+                    'update' => 'admin.permissions.update',
+                    'show' => 'admin.permissions.show',
+                    'edit' => 'admin.permissions.edit',
+                ]);
+                Route::resource('roles', 'Admin\RolesController')->names([
+                    'index' => 'admin.roles.index',
+                    'store' => 'admin.roles.store',
+                    'create' => 'admin.roles.create',
+                    'destroy' => 'admin.roles.destroy',
+                    'update' => 'admin.roles.update',
+                    'show' => 'admin.roles.show',
+                    'edit' => 'admin.roles.edit',
+                ]);
 
                 /*Route::get('user', 'Admin\UsersController@index')->name('admin.users.index');
                 Route::get('user/{user}/edit', 'Admin\UsersController@edit')->name('admin.users.edit');

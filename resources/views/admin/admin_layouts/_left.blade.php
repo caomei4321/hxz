@@ -56,6 +56,29 @@
             <li>
                 <a class="J_menuItem" href="{{ route('admin.manual.index') }}"><i class="fa fa-users"></i> <span class="nav-label">手册</span></a>
             </li>
+            <li>
+                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    @if(auth()->user()->can('admin\administrators') || auth()->user()->id ===1)
+                        {{--@can('admin\administrators')--}}
+                        <li><a class="J_menuItem" href="{{ route('admin.administrators.index') }}">管理员</a>
+                        </li>
+                        {{--@endcan--}}
+                    @endif
+                    @if(auth()->user()->can('admin\administrators') || auth()->user()->id ===1)
+                        {{--@can('admin\roles')--}}
+                        <li><a class="J_menuItem" href="{{ route('admin.roles.index') }}">角色</a>
+                        </li>
+                        {{--@endcan--}}
+                    @endif
+                    @if(auth()->user()->can('admin\permissions') || auth()->user()->id ===1)
+                        {{--@can('admin\permissions')--}}
+                        <li><a class="J_menuItem" href="{{ route('admin.permissions.index') }}">权限</a>
+                        </li>
+                        {{--@endcan--}}
+                    @endif
+                </ul>
+            </li>
 
         </ul>
     </div>
