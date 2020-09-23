@@ -55,7 +55,7 @@
                                 <td class="center">{{ $permission->created_at }}</td>
                                 <td class="center">
                                     <a href="{{ route('admin.permissions.edit',['permission' => $permission->id]) }}"><button type="button" class="btn btn-primary btn-xs">编辑</button></a>
-                                    <a href="{{ route('admin.permissions.show',['permission' => $permission->id]) }}"><button type="button" class="btn btn-danger btn-xs">查看</button></a>
+                                    {{--<a href="{{ route('admin.permissions.show',['permission' => $permission->id]) }}"><button type="button" class="btn btn-danger btn-xs">查看</button></a>--}}
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $permission->id }}">删除</button>
                                 </td>
                             </tr>

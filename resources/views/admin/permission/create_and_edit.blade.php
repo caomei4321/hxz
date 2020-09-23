@@ -51,14 +51,14 @@
                                         <label class="col-sm-2 control-label">权限标识：</label>
 
                                         <div class="col-sm-6">
-                                            <input name="mark" id="mark" type="text" placeholder="例：添加司机" class="form-control" value="{{ old('mark',$permission->mark) }}">
+                                            <input name="mark" id="mark" type="text" placeholder="例：人员信息" class="form-control" value="{{ old('mark',$permission->mark) }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">权限名称：</label>
 
                                         <div class="col-sm-6">
-                                            <input name="name" id="name" type="text" placeholder="例：user.add" class="form-control" value="{{ old('name',$permission->name) }}">
+                                            <input name="name" id="name" type="text" placeholder="例：admin\user" class="form-control" value="{{ old('name',$permission->name) }}">
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
