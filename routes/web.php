@@ -34,7 +34,7 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::get('count', 'Admin\CountsController@index')->name('admin.counts.index');
 
-            Route::group(['middleware' => 'checkPermission'], function () {
+            //Route::group(['middleware' => 'checkPermission'], function () {
 
                 /*Route::get('user', 'Admin\UsersController@index')->name('admin.users.index');
                 Route::get('user/{user}/edit', 'Admin\UsersController@edit')->name('admin.users.edit');
@@ -186,7 +186,7 @@ Route::group(['prefix' => 'admin'], function () {
                     'update' => 'admin.manual.update'
                 ]);
 
-            });
+            //});
 
             // 导入导出
            // Route::get('matters/export', 'Admin\MattersController@export')->name('admin.matters.export');
