@@ -48,7 +48,7 @@
                         <tbody>
                         @foreach($administrators as $administrator)
                             <tr class="gradeC">
-                                <td>{{ $administrator->name }}</td>
+                                <td>{{ $administrator->id }}</td>
                                 <td>{{ $administrator->name }}</td>
                                 <td>{{ $administrator->phone }}</td>
                                 {{--<td>{{ $user->role_name }}</td>--}}
