@@ -56,7 +56,15 @@ class TemporaryTasksController extends Controller
 
         foreach ($request->users as $key => $value) {
             //$job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', 'pages/basics/temporary?id='.$commonTask->id, $data);
-            $job = new SendMessage($value, 'FLIa3sZqChPa9T2rj4xu7OeYNNT_-3vpSBiTIiJ__t8', 'pages/basics/temporary?id='.$commonTask->id, $data);
+            //$job = new SendMessage($value, 'FLIa3sZqChPa9T2rj4xu7OeYNNT_-3vpSBiTIiJ__t8', 'pages/basics/temporary?id='.$commonTask->id, $data);
+            $job = new SendMessage($value, 'CcK9cjdSeQrwBnh0kIpjjGcPl0BnKI6EYZBSmweszPY', 'pages/basics/temporary?id='.$commonTask->id, [
+                'thing1' => [
+                    'value' => $data['title']
+                ],
+                'thing5' => [
+                    'value' => $data['content']
+                ]
+            ]);
             dispatch($job);
         }
 

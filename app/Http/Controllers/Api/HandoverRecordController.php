@@ -43,6 +43,14 @@ class HandoverRecordController extends Controller
             'title' => '交接信息',
             'content' => $request->description
         ]);*/
+        $job = new SendMessage($request->recipient_user, 'HUK6E-VrPherQ7P2SKEm6xT7EpMaTIVVxFKHkkY-OH8', 'pages/basics/shift', [
+            'thing1' => [
+                'value' => $user->name
+            ],
+            'thing2' => [
+                'value' => $request->description
+            ]
+        ]);
         $job = new SendMessage($request->recipient_user, 'FLIa3sZqChPa9T2rj4xu7OeYNNT_-3vpSBiTIiJ__t8', 'pages/basics/shift', [
             'title' => '交接信息',
             'content' => $request->description

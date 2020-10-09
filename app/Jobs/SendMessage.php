@@ -58,14 +58,7 @@ class SendMessage implements ShouldQueue
                 'touser' => $openId,
                 'template_id' => $this->templateId,
                 'page' => $this->page,
-                'data' => [
-                    'thing1' => [
-                        'value' => $this->data['title']
-                    ],
-                    'thing2' => [
-                        'value' => $this->data['content']
-                    ]
-                ],
+                'data' => $this->data,
                 //'miniprogram_state' => 'trial'  体验版
                 'miniprogram_state' => 'formal'
             ];
