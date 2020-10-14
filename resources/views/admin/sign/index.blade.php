@@ -46,8 +46,8 @@
                         @foreach($signs as $sign)
                             <tr class="gradeC">
                                 <td>{{ $sign->id }}</td>
-                                <td>{{ $sign->user->name }}</td>
-                                <td>{{ $sign->user->department->name }}</td>
+                                <td>{{ isset($sign->user->name) ?  $sign->user->name : '' }}</td>
+                                <td>{{ isset($sign->user->department->name) ? $sign->user->department->name : '' }}</td>
                                 <td>{{ $sign->created_at }}</td>
                                 <td>{{ $sign->type ? '到岗签到' : '离岗签到' }}</td>
                                 {{--<td class="center">
