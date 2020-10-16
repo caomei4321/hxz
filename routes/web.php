@@ -195,6 +195,7 @@ Route::group(['prefix' => 'admin'], function () {
                 ]);
 
                 // 交班记录
+                Route::get('handoverRecords/export/excel', 'Admin\HandoverRecordsController@export')->name('admin.handoverRecord.export'); // 导出
                 Route::resource('handoverRecords', 'Admin\HandoverRecordsController', ['except' => ['edit', 'update']])->names([
                     'index' => 'admin.handoverRecord.index',
                     'store' => 'admin.handoverRecord.store',
