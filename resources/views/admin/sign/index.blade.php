@@ -5,6 +5,9 @@
     <link href="{{ asset('assets/admin/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="{{ asset('assets/admin/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('assets/admin/css/plugins/chosen/chosen.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -32,6 +35,32 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    <form method="get" action="" id="form">
+                        <div class="form-group form-inline row text-left" id="data_5">
+                            {{--<label class="font-noraml">范围选择</label>--}}
+                            {{--{{ csrf_field() }}--}}
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" name="start_time" value="{{ isset($filter['start_time']) ? $filter['start_time'] : date("Y-m-d",time()) }}" />
+                                <span class="input-group-addon">到</span>
+                                <input type="text" class="input-sm form-control" name="end_time" value="{{ isset($filter['end_time']) ? $filter['end_time'] : date("Y-m-d",time()) }}" />
+                            </div>
+                            <div class="form-group">
+                                <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
+                                    <option value="">选择部门</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                                <select class="chosen-select" name="type" style="width: 200px;" tabindex="2" >
+                                    <option value="3" @if($filter['type'] == 3) selected @endif>选择签到类型</option>
+                                    <option value="1" @if($filter['type'] == 1) selected @endif>上班卡</option>
+                                    <option value="2" @if($filter['type'] == 2) selected @endif>下班卡</option>
+                                </select>
+                                <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
@@ -68,7 +97,7 @@
                         </tfoot>
                     </table>
                 </div>
-                {{ $signs->links('vendor.pagination.default') }}
+                {{ $signs->appends($filter)->links('vendor.pagination.default') }}
             </div>
         </div>
     </div>
@@ -81,6 +110,10 @@
 
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    <!-- Data picker -->
+    <script src="{{ asset('assets/admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <!-- Chosen -->
+    <script src="{{ asset('assets/admin/js/plugins/chosen/chosen.jquery.js') }}"></script>
 
     <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
@@ -88,5 +121,39 @@
 
 @section('javascript')
     <script>
+        $('#datepicker').datepicker();
+        $('#dc').datepicker();
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': {
+                allow_single_deselect: true
+            },
+            '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            },
+            '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            },
+            '.chosen-select-width': {
+                width: "95%"
+            }
+        };
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+        /*$('.dataTables-example').dataTable({
+            "lengthChange": false,
+            "paging": false
+        });*/
+        function submitForm(type) {
+            var obj = $('#form');
+            if (type == 'export') {
+                obj.attr('action', "{{ route('admin.sign.export') }}");
+                obj.submit();
+            } else if (type == 'search') {
+                obj.attr('action', "{{ route('admin.sign.index') }}");
+                obj.submit();
+            }
+        }
     </script>
 @endsection

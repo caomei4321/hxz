@@ -133,6 +133,8 @@ Route::group(['prefix' => 'admin'], function () {
 
                 // 签到统计
                 Route::get('signs', 'Admin\SignsController@index')->name('admin.sign.index');
+                // 导出签到
+                Route::get('signs/export/excel', 'Admin\SignsController@export')->name('admin.sign.export');
                 // 日常处理记录
                 /*Route::resource('dailyProcesses', 'Admin\DailyProcessesController')->names([
                     'index' => 'admin.dailyProcess.index',
