@@ -2,25 +2,45 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\TemporaryTaskExport;
 use App\Jobs\SendMessage;
+use App\Models\CommonProcess;
 use App\Models\CommonTask;
 use App\Models\Department;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class TemporaryTasksController extends Controller
 {
-    public function index(CommonTask $commonTask)
+    public function index(CommonTask $commonTask, Request $request)
     {
-        $commonTasks = $commonTask
-                        ->where('category', '临时任务')
-                        ->with(['users' => function($query) {
-                                                $query->with('department');
-                                            }])
-                        ->orderBy('id', 'desc')->paginate();
+        $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
+        $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
 
-        return view('admin.temporaryTask.index', compact('commonTasks'));
+        $commonTasks =
+            $commonTask->where('category', '临时任务')->whereBetween('created_at',[$startTime,$endTime])->with(['users' =>
+                function($query) {$query->with('department');}])
+                        ->orderBy('id', 'desc')->paginate();
+/*        $commonTasks = $commonTask->whereBetween('up_at',[$startTime,$endTime]);*/
+
+
+
+
+
+        $filter = [
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            //'category' => $category
+        ];
+       /* $res =CommonTask ::whereDate('created_at', '>=', $startTime)
+            ->whereDate('created_at', '<=', $endTime)
+            ->get();*/
+
+
+        return view('admin.temporaryTask.index', compact('commonTasks','filter'));
     }
 
 
@@ -55,7 +75,7 @@ class TemporaryTasksController extends Controller
         $commonTask->users()->attach($request->users);
 
         foreach ($request->users as $key => $value) {
-            //$job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', 'pages/basics/temporary?id='.$commonTask->id, $data);
+           // $job = new SendMessage($value, '0-wReXMBf0gg7Br3HRaZ-lW5x55hu5ot_d5k3YncJgc', 'pages/basics/temporary?id='.$commonTask->id, $data);
             //$job = new SendMessage($value, 'FLIa3sZqChPa9T2rj4xu7OeYNNT_-3vpSBiTIiJ__t8', 'pages/basics/temporary?id='.$commonTask->id, $data);
             $job = new SendMessage($value, 'CcK9cjdSeQrwBnh0kIpjjGcPl0BnKI6EYZBSmweszPY', 'pages/basics/temporary?id='.$commonTask->id, [
                 'thing1' => [
@@ -109,4 +129,14 @@ class TemporaryTasksController extends Controller
             'status' => 200
         ]);
     }
+    public function export(Request $request)
+    {
+        $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
+        $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
+        $departmentId =  $request->department_id ? $request->department_id : '';
+
+
+        return Excel::download(new TemporaryTaskExport($startTime, $endTime, $departmentId), '临时任务记录导出.xls');
+    }
+
 }

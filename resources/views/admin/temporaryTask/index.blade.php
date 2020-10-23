@@ -5,6 +5,10 @@
     <link href="{{ asset('assets/admin/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="{{ asset('assets/admin/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/style.css?v=4.1.0') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/plugins/chosen/chosen.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -32,8 +36,32 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <a href="{{ route('admin.temporaryTask.create') }}"><button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i> 发布任务</button>
-                    </a>
+                    <form method="get" action="" id="form">
+                        <div class="form-group form-inline row text-left" id="data_5">
+
+                            <a href="{{ route('admin.temporaryTask.create') }}">
+                                <button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i>
+                                    发布任务
+                                </button>
+                            </a>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" CLASS="input-sm form-control" name="start_time"
+                                       value="{{ isset($filter['start_time']) ? $filter['start_time'] : date("Y-m-d",time()) }}"/>
+                                <span class="input-group-addon">到</span>
+                                <input type="text" class="input-sm form-control" name="end_time"
+                                       value="{{ isset($filter['end_time']) ? $filter['end_time'] : date("Y-m-d",time()) }}"/>
+                            </div>
+
+                            <div class="form-group">
+                                <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+
                     <table class="table table-striped table-bordered table-hover dataTables-example">
                         <thead>
                         <tr>
@@ -68,9 +96,15 @@
                                 @endif
                                 <td>{{ $commonTask->created_at }}</td>
                                 <td class="center">
-                                    <a href="{{ route('admin.temporaryTask.show', ['commonTask' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonTask->id }}">查看</button></a>
-                                    <button class="btn btn-info btn-xs edit" data-id="{{ $commonTask->id }}">修改状态</button>
-                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $commonTask->id }}">删除</button>
+                                    <a href="{{ route('admin.temporaryTask.show', ['commonTask' => $commonTask->id]) }}">
+                                        <button type="button" class="btn btn-danger btn-xs" id="show"
+                                                data-id="{{ $commonTask->id }}">查看
+                                        </button>
+                                    </a>
+                                    <button class="btn btn-info btn-xs edit" data-id="{{ $commonTask->id }}">修改状态
+                                    </button>
+                                    <button class="btn btn-warning btn-xs delete" data-id="{{ $commonTask->id }}">删除
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -102,7 +136,10 @@
 
     <!-- Sweet alert -->
     <script src="{{ asset('assets/admin/js/plugins/sweet/sweetalert.min.js') }}"></script>
-    {{--    <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>--}}
+    <!-- Data picker -->
+    <script src="{{ asset('assets/admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <!-- Chosen -->
+    <script src="{{ asset('assets/admin/js/plugins/chosen/chosen.jquery.js') }}"></script>
 
     <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/layer/layer.js') }}"></script>
@@ -123,15 +160,15 @@
                     throw null;
                 }
                 $.ajaxSetup({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type:"get",
-                    url: '/admin/temporaryTask/changeStatus/'+id,
-                    success:function (res) {
-                        if (res.status == 200){
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: "get",
+                    url: '/admin/temporaryTask/changeStatus/' + id,
+                    success: function (res) {
+                        if (res.status == 200) {
                             swal(res.message, "您已成功修改任务状态。", "success");
                             location.reload()
                             //location.reload();
-                        }else {
+                        } else {
                             swal(res.message, "请稍后重试。", "warning");
                         }
                     },
@@ -150,14 +187,14 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajaxSetup({
-                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        type:"delete",
-                        url: '/admin/temporaryTasks/'+id,
-                        success:function (res) {
-                            if (res.status == 200){
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type: "delete",
+                        url: '/admin/temporaryTasks/' + id,
+                        success: function (res) {
+                            if (res.status == 200) {
                                 swal(res.message, "您已经永久删除了这条信息。", "success");
                                 location.reload();
-                            }else {
+                            } else {
                                 swal(res.message, "请稍后重试。", "waring");
                             }
                         },
@@ -166,14 +203,26 @@
                 }
             })
         });
-        /*$('#add_task').click(function () {
-            layer.open({
-                type: 2,
-                area: ['700px', '450px'],
-                fixed: false, //不固定
-                maxmin: true,
-                content: ""
-            });
-        });*/
+
+        $('#datepicker').datepicker();
+        $('.dataTables-example').dataTable({
+            "lengthChange": false,
+            "paging": false
+        });
+
+
+        function submitForm(type) {
+            var obj = $('#form');
+            if (type == 'export') {
+                obj.attr('action', "{{ route('admin.temporaryTask.export') }}");
+                obj.submit();
+            } else if (type == 'search') {
+                obj.attr('action', "{{ route('admin.temporaryTask.index') }}");
+                obj.submit();
+            }
+        }
+
+
+
     </script>
 @endsection

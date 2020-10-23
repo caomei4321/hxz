@@ -10,7 +10,7 @@ class CommonTask extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'content', 'category', 'status'
+        'title', 'content', 'category', 'status','created_at','update_at'
     ];
 
     public function users()

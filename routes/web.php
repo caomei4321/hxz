@@ -13,6 +13,7 @@
 
 //Route::redirect('/', 'admin/login' );
 Route::get('/', function (){
+    //echo phpinfo();return ;
     return redirect()->route('admin.index');
 });
 
@@ -172,6 +173,9 @@ Route::group(['prefix' => 'admin'], function () {
                 ]);
                 Route::get('temporaryTasks/{commonTask}', 'Admin\TemporaryTasksController@show')->name('admin.temporaryTask.show');
                 Route::delete('temporaryTasks/{commonTask}', 'Admin\TemporaryTasksController@destroy')->name('admin.temporaryTask.destroy');
+                //临时任务导出
+                Route::get('temporaryTask/export/excel', 'Admin\TemporaryTasksController@export')->name('admin.temporaryTask.export'); // 导出
+                //Route::any('temporaryTask', 'Admin\TemporaryTasksController@index')->name('admin.temporaryTask.index');
 
                 // 专项任务
                 Route::get('specialTask/changeStatus/{commonTask}', 'Admin\SpecialTasksController@changeStatus')->name('admin.specialTask.changeStatus');; // 修改任务状态
