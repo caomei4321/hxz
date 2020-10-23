@@ -43,12 +43,13 @@ class TemporaryTaskExport implements FromCollection
 
             $status = $value->status;
             if ($status==1){
-                $status=' `进行中';
+                $status='进行中';
+                $updated_at = '';
             }else{
                 $status='已完成';
+                $updated_at = $value->updated_at;
             }
             $created_at = $value->created_at;
-            $updated_at = $value->updated_at;
 
             $data = [
                 $title, $content, $category, $status, $created_at, $updated_at
