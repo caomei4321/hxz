@@ -1,12 +1,13 @@
 <?php
 namespace App\Exports;
 
-use App\Models\CommonProcess;
 use App\Models\CommonTask;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class TemporaryTaskExport implements FromCollection
+class TemporaryTaskExport implements FromCollection, ShouldAutoSize, WithColumnFormatting
 {
     private $startTime;
     private $endTime;
@@ -26,38 +27,52 @@ class TemporaryTaskExport implements FromCollection
 
     public function createData()
     {
-        $commonTasks = CommonTask::whereBetween('created_at',[$this->startTime, $this->endTime])->where('category', '临时任务')->get();
-
-
+        $commonTasks = CommonTask::whereBetween('created_at',[$this->startTime, $this->endTime])->where('category', '临时任务')->with('users.department')->get();
         $cellData = [];
 
-        $firstRow = [ '任务标题', '任务内容', '小区名称', '任务状态', '下发时间', '处理完成时间'];
+        $firstRow = ['下发时间', '处理完成时间', '任务标题', '任务内容', '执行人', '小区名称', '处理描述'];
 
         array_push($cellData, $firstRow);
 
+        //Carbon::now()->getTimestamp()
         foreach ($commonTasks as $value) {
-
-            $title = $value->title;
-            $content=$value->content;
-            $category=$value->category;
-
-            $status = $value->status;
-            if ($status==1){
-                $status='进行中';
+            $createdAt = $value->created_at->getTimestamp();
+            if ($value->status){
                 $updated_at = '';
             }else{
-                $status='已完成';
-                $updated_at = $value->updated_at;
+                $updated_at = $value->updated_at->getTimestamp();
             }
-            $created_at = $value->created_at;
+            $title = $value->title;
+            $content = $value->content;
+            $users = '';
+            $departments = '';
 
             $data = [
-                $title, $content, $category, $status, $created_at, $updated_at
+                $createdAt, $updated_at, $title, $content, $users, $departments
             ];
+            // 拼接任务的所有人员和部门
+            foreach ($value->users as $user) {
+                $users = $user->name.','.$users;
+                $departments = $user->department->name.','.$departments;
+                array_push($data, $user->pivot->description);
+            }
+            $data[4] = $users;
+            $data[5] = $departments;
 
             array_push($cellData, $data);
         }
 
         return $cellData;
+    }
+
+    /**
+     * @return array
+     */
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_DATE_DATETIME, //日期
+            'B' => NumberFormat::FORMAT_DATE_DATETIME, //日期
+        ];
     }
 }
