@@ -2,6 +2,7 @@
 namespace App\Exports;
 
 use App\Models\CommonTask;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
@@ -34,13 +35,12 @@ class TemporaryTaskExport implements FromCollection, ShouldAutoSize, WithColumnF
 
         array_push($cellData, $firstRow);
 
-        //Carbon::now()->getTimestamp()
         foreach ($commonTasks as $value) {
-            $createdAt = $value->created_at->getTimestamp();
+            $createdAt = $value->created_at->toDateTimeString();
             if ($value->status){
                 $updated_at = '';
             }else{
-                $updated_at = $value->updated_at->getTimestamp();
+                $updated_at = $value->updated_at->toDateTimeString();
             }
             $title = $value->title;
             $content = $value->content;
