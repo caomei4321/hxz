@@ -41,6 +41,15 @@ class DailyTasksController extends Controller
 
     public function store(Request $request, DailyTask $dailyTask)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'users' => 'required'
+        ], [
+            'title.required' => '请填写标题',
+            'content.required' => '请填写内容',
+            'users.required' => '请选择执行人'
+        ]);
         $data = $request->only(['title', 'content']);
         $data['status'] = 1;  //刚添加的任务默认状态为进行中
         $dailyTask->fill($data);

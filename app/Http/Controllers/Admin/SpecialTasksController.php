@@ -39,6 +39,15 @@ class SpecialTasksController extends Controller
 
     public function store(Request $request, CommonTask $commonTask)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'users' => 'required'
+        ], [
+            'title.required' => '请填写标题',
+            'content.required' => '请填写内容',
+            'users.required' => '请选择执行人'
+        ]);
         $data = $request->only(['title', 'content']);
         $data['status'] = 1;  //刚添加的任务默认状态为进行中
         $data['category'] = '专项任务';

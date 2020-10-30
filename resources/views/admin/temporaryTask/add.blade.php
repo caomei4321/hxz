@@ -64,7 +64,7 @@
                             <label class="col-sm-2 control-label">标题：</label>
 
                             <div class="col-sm-6">
-                                <input name="title" id="title" type="text" placeholder="" class="form-control" value="">
+                                <input name="title" id="title" type="text" placeholder="" class="form-control" value="{{ old('title') }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,7 +72,7 @@
 
 
                             <div class="col-sm-6">
-                                <textarea id="content" name="content" class="form-control" required="" aria-required="true"></textarea>
+                                <textarea id="content" name="content" class="form-control" required="" aria-required="true">{{ old('content') }}</textarea>
                             </div>
                         </div>
                         @foreach($userCategories as $k => $userCategory)
