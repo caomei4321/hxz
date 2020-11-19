@@ -59,6 +59,10 @@ $api->version('v1', [
         $api->post('commonTasks', 'CommonTaskController@store');
         // 上报事件
         $api->post('uploadEvent', 'UploadEventController@eventStore');
+        // 上报事件详情
+        $api->get('uploadEvent/eventDetail', 'UploadEventController@eventDetail');
+        // 添加上报事件回复
+        $api->post('uploadEvent/appendReply', 'UploadEventController@appendReply');
         // 消息列表
         $api->get('messages/list', 'MessageController@messageList');
         // 读取消息

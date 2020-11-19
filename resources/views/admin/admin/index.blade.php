@@ -41,6 +41,7 @@
                             <th>姓名</th>
                             <th>手机号</th>
                             {{--<th>角色</th>--}}
+                            <th>部门</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -52,6 +53,7 @@
                                 <td>{{ $administrator->name }}</td>
                                 <td>{{ $administrator->phone }}</td>
                                 {{--<td>{{ $user->role_name }}</td>--}}
+                                <td>{{ $administrator->department_id ? $administrator->department->name : '' }}</td>
                                 <td>{{ $administrator->created_at }}</td>
                                 <td class="center">
                                     <a href="{{ route('admin.administrators.edit',['administrators' => $administrator->id]) }}"><button type="button" class="btn btn-primary btn-xs">编辑</button></a>
@@ -66,6 +68,7 @@
                             <th>姓名</th>
                             <th>手机号</th>
                             {{--<th>角色</th>--}}
+                            <th>部门</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>

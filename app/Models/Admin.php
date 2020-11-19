@@ -14,10 +14,15 @@ class Admin extends Authenticatable
     protected $guard_name = 'admin';
 
     protected $fillable = [
-        'name', 'phone', 'password',
+        'name', 'phone', 'password', 'department_id'
     ];
 
     protected $hidden = [
         'password', 'remember_token'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 //use App\Models\Station;
 //use App\Observers\AdministratorObservers;
 use App\Models\Admin;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 //use App\Http\Requests\AdministratorRequest;
@@ -19,11 +20,12 @@ class AdminsController extends Controller
         return view('admin.admin.index', compact('administrators'));
     }
 
-    public function create(Admin $administrator, Role $role)
+    public function create(Admin $administrator, Role $role, Department $department)
     {
         $roles = $role->all();
+        $departments = $department->all();
         //dd($stations);
-        return view('admin.admin.create_and_edit', compact('administrator', 'roles'));
+        return view('admin.admin.create_and_edit', compact('administrator', 'roles', 'departments'));
     }
 
     public function store(Request $request, Admin $administrator)
@@ -32,6 +34,7 @@ class AdminsController extends Controller
             'name' => $request->name,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'department_id' => $request->department_id,
         ];
         $administrator = $administrator->create($data);
 
@@ -47,23 +50,25 @@ class AdminsController extends Controller
     }
 
 
-    public function edit(Admin $administrator, Role $role)
+    public function edit(Admin $administrator, Role $role, Department $department)
     {
         $roles = $role->all();
         $administrator_roles = $administrator->getRoleNames()->toArray();
+        $departments = $department->all();
         //dd($administrator_roles);
-        return view('admin.admin.create_and_edit', compact('administrator', 'roles', 'administrator_roles'));
+        return view('admin.admin.create_and_edit', compact('administrator', 'roles', 'administrator_roles', 'departments'));
     }
 
 
     public function update(Request $request, Admin $administrator)
     {
         if (Hash::check($request->password,$administrator->password)) {
-            $administrator->update($request->only(['name', 'phone']));
+            $administrator->update($request->only(['name', 'phone', 'department_id']));
         } else {
             $administrator->update([
                 'name' => $request->name,
                 'phone' => $request->phone,
+                'department_id' => $request->department_id,
                 'password' => Hash::make($request->password)
             ]);
         }

@@ -197,6 +197,7 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.event.destroy',
                     'create' => 'admin.event.create'
                 ]);
+                Route::get('events/export/excel', 'Admin\EventsController@export')->name('admin.event.export'); // 导出
 
                 // 交班记录
                 Route::get('handoverRecords/export/excel', 'Admin\HandoverRecordsController@export')->name('admin.handoverRecord.export'); // 导出

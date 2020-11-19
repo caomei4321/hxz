@@ -69,6 +69,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label">部门：</label>
+
+                                        <div class="col-sm-6">
+                                            <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
+                                                <option value="">选择部门</option>
+                                                @foreach($departments as $department)
+                                                    <option value="{{ $department->id }}" hassubinfo="true" @if( old('department_id', $administrator->department_id) == $department->id) selected @endif>{{ $department->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">用户角色：</label>
                                         <div class="col-sm-6">
                                             {{--multiple--}}
