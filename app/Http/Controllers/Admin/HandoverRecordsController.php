@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\HandoverRecord;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -15,9 +16,16 @@ class HandoverRecordsController extends Controller
 {
     public function index(HandoverRecord $handoverRecord, Request $request)
     {
+        if (Auth::user()->department_id) {
+            $departmentId = Auth::user()->department_id;
+
+        } else {
+            $departmentId =  $request->department_id ? $request->department_id : '';
+        }
+
         $startTime = $request->start_time ? $request->start_time : '';
         $endTime = $request->end_time ? $request->end_time : '';
-        $departmentId =  $request->department_id ? $request->department_id : '';
+        //$departmentId =  $request->department_id ? $request->department_id : '';
         $departments = Department::all();
 
         $query = $handoverRecord;

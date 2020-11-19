@@ -62,7 +62,8 @@ class AdminsController extends Controller
 
     public function update(Request $request, Admin $administrator)
     {
-        if (Hash::check($request->password,$administrator->password)) {
+        if ($administrator->password == $request->password) {
+        //if (Hash::check($request->password,$administrator->password)) {
             $administrator->update($request->only(['name', 'phone', 'department_id']));
         } else {
             $administrator->update([

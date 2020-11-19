@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
@@ -17,6 +18,16 @@ class TemporaryTasksController extends Controller
 {
     public function index(CommonTask $commonTask, Request $request)
     {
+        if (Auth::user()->department_id) {
+            $departmentId = Auth::user()->department_id;
+            $commonIds = DB::select("SELECT b.common_id FROM (select id FROM `users` WHERE department_id = $departmentId) as a, `user_has_common_tasks` as b WHERE b. user_id = a.id");
+            $commons = [];  // 包含当前小区的所有任务id
+            foreach ($commonIds as $commonId) {
+                array_push($commons, $commonId->common_id);
+            }
+            $commonTask = $commonTask->whereIn('id', $commons);
+        }
+
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
 

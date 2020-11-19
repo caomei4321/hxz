@@ -47,14 +47,18 @@
                                 <input type="text" class="input-sm form-control" name="end_time" value="{{ isset($filter['end_time']) ? $filter['end_time'] : date("Y-m-d",time()) }}" />
                             </div>
                             <div class="form-group">
+                                @role('超级管理员')
                                 <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
                                     <option value="">选择部门</option>
                                     @foreach($departments as $department)
                                         <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
                                     @endforeach
                                 </select>
+                                @endrole
                                 <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                @role('超级管理员')
                                 <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
+                                @endrole
                             </div>
                         </div>
                     </form>
@@ -67,7 +71,9 @@
                             <th>接班人</th>
                             <th>交班内容</th>
                             <th>交班时间</th>
+                            @role('超级管理员')
                             <th>操作</th>
+                            @endrole
                         </tr>
                         </thead>
                         <tbody>
@@ -79,10 +85,12 @@
                                 <td>{{ $handoverRecord->recipientUser->name }}</td>
                                 <td>{{ $handoverRecord->content }}</td>
                                 <td>{{ $handoverRecord->created_at }}</td>
+                                @role('超级管理员')
                                 <td class="center">
                                     {{--<a href="{{ route('admin.temporaryTask.show', ['commonTask' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonTask->id }}">查看</button></a>--}}
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $handoverRecord->id }}">删除</button>
                                 </td>
+                                @endrole
                             </tr>
                         @endforeach
                         </tbody>
@@ -94,7 +102,9 @@
                             <th>接班人</th>
                             <th>交班内容</th>
                             <th>交班时间</th>
+                            @role('超级管理员')
                             <th>操作</th>
+                            @endrole
                         </tr>
                         </tfoot>
                     </table>

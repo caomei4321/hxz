@@ -38,12 +38,13 @@
                 <div class="ibox-content">
                     <form method="get" action="" id="form">
                         <div class="form-group form-inline row text-left" id="data_5">
-
+                            @role('超级管理员')
                             <a href="{{ route('admin.temporaryTask.create') }}">
                                 <button class="btn btn-info " id="add_task" type="button"><i class="fa fa-paste"></i>
                                     发布任务
                                 </button>
                             </a>
+                            @endrole
                             <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" CLASS="input-sm form-control" name="start_time"
                                        value="{{ isset($filter['start_time']) ? $filter['start_time'] : date("Y-m-d",time()) }}"/>
@@ -54,7 +55,9 @@
 
                             <div class="form-group">
                                 <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                @role('超级管理员')
                                 <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
+                                @endrole
                             </div>
 
                         </div>
@@ -101,10 +104,12 @@
                                                 data-id="{{ $commonTask->id }}">查看
                                         </button>
                                     </a>
+                                    @role('超级管理员')
                                     <button class="btn btn-info btn-xs edit" data-id="{{ $commonTask->id }}">修改状态
                                     </button>
                                     <button class="btn btn-warning btn-xs delete" data-id="{{ $commonTask->id }}">删除
                                     </button>
+                                    @endrole
                                 </td>
                             </tr>
                         @endforeach

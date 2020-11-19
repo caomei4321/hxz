@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -27,9 +28,15 @@ class EventsController extends Controller
 
     public function index(Request $request, Event $event, Department $department)
     {
+        if (Auth::user()->department_id) {
+            $departmentId = Auth::user()->department_id;
+
+        } else {
+            $departmentId =  $request->department_id ? $request->department_id : '';
+        }
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
-        $departmentId =  $request->department_id ? $request->department_id : '';
+        //$departmentId =  $request->department_id ? $request->department_id : '';
 
         if ($departmentId) {
             $users = DB::table('users')->where('department_id', $departmentId)->pluck('id');

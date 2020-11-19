@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\SignsExport;
 use App\Models\Department;
 use App\Models\Sign;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -14,9 +16,16 @@ class SignsController extends Controller
 {
     public function index(Sign $sign, Request $request)
     {
+        if (Auth::user()->department_id) {
+            $departmentId = Auth::user()->department_id;
+
+        } else {
+            $departmentId =  $request->department_id ? $request->department_id : '';
+        }
+
         $startTime = $request->start_time ? $request->start_time : '';
         $endTime = $request->end_time ? $request->end_time : '';
-        $departmentId =  $request->department_id ? $request->department_id : '';
+        //$departmentId =  $request->department_id ? $request->department_id : '';
         $type = $request->type ? $request->type : 3;
         $departments = Department::all();
 

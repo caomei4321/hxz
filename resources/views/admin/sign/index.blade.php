@@ -45,19 +45,23 @@
                                 <input type="text" class="input-sm form-control" name="end_time" value="{{ isset($filter['end_time']) ? $filter['end_time'] : date("Y-m-d",time()) }}" />
                             </div>
                             <div class="form-group">
+                                @role('超级管理员')
                                 <select class="chosen-select" name="department_id" style="width: 200px;" tabindex="2" >
                                     <option value="">选择部门</option>
                                     @foreach($departments as $department)
                                         <option value="{{ $department->id }}" hassubinfo="true" @if( $filter['department_id'] == $department->id) selected @endif>{{ $department->name }}</option>
                                     @endforeach
                                 </select>
+                                @endrole
                                 <select class="chosen-select" name="type" style="width: 200px;" tabindex="2" >
                                     <option value="3" @if($filter['type'] == 3) selected @endif>选择签到类型</option>
                                     <option value="1" @if($filter['type'] == 1) selected @endif>上班卡</option>
                                     <option value="2" @if($filter['type'] == 2) selected @endif>下班卡</option>
                                 </select>
                                 <button onclick="submitForm('search')" class="btn btn-primary">搜索</button>
+                                @role('超级管理员')
                                 <button onclick="submitForm('export')" class="btn btn-primary">导出报表</button>
+                                @endrole
                             </div>
                         </div>
                     </form>
