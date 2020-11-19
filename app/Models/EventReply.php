@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class EventReply extends Model
 {
     protected $fillable = [
-        'event_id', 'reply'
+        'event_id', 'reply', 'img'
     ];
 
     public function event()

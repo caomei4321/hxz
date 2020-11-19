@@ -42,7 +42,12 @@ class UploadEventController extends Controller
     // 添加上报事件回复
     public function appendReply(Request $request, EventReply $eventReply)
     {
-        $eventReply->fill($request->only(['event_id', 'reply']));
+        $data = [
+            'event_id' => $request->event_id,
+            'reply' => $request->reply,
+            'img' => json_encode($request->img)
+        ];
+        $eventReply->fill($data);
         $eventReply->save();
 
         return $this->success([
