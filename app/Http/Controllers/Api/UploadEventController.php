@@ -42,6 +42,8 @@ class UploadEventController extends Controller
     // 添加上报事件回复
     public function appendReply(Request $request, EventReply $eventReply)
     {
+        Event::where('id', $request->event_id)->update(['status' => 2]);
+
         $data = [
             'event_id' => $request->event_id,
             'reply' => $request->reply,

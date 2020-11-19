@@ -80,7 +80,13 @@
                             <td>{{ $event->user->department->name }}</td>
                             <td>{{ $event->user->name }}</td>
                             <td>{{ $event->description }}</td>
-                            <td>{{ $event->status ? '处理完成':'未处理完成'}}</td>
+                            @if($event->status == 2)
+                                <td>出警处理</td>
+                            @elseif($event->status == 1)
+                                <td>请求出警</td>
+                            @else
+                                <td>自主处理完成</td>
+                            @endif
                             <td>{{ isset($event->replies[0]->reply) ? $event->replies[0]->reply : '' }}</td>
                             <td>{{ $event->created_at }}</td>
                             <td class="center">
