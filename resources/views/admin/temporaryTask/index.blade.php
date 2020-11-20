@@ -152,6 +152,10 @@
 
 @section('javascript')
     <script>
+        var url = window.location.href;
+        setInterval(function () {
+            window.location.href = url;
+        }, 120000);
         $('.edit').click(function () {
             var id = $(this).data('id');
             swal({

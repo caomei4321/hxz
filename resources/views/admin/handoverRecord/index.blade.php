@@ -71,6 +71,7 @@
                             <th>接班人</th>
                             <th>交班内容</th>
                             <th>交班时间</th>
+                            <th>接班时间</th>
                             @role('超级管理员')
                             <th>操作</th>
                             @endrole
@@ -85,6 +86,7 @@
                                 <td>{{ $handoverRecord->recipientUser->name }}</td>
                                 <td>{{ $handoverRecord->content }}</td>
                                 <td>{{ $handoverRecord->created_at }}</td>
+                                <td>{{ $handoverRecord->read_time }}</td>
                                 @role('超级管理员')
                                 <td class="center">
                                     {{--<a href="{{ route('admin.temporaryTask.show', ['commonTask' => $commonTask->id]) }}"><button type="button" class="btn btn-danger btn-xs" id="show" data-id="{{ $commonTask->id }}">查看</button></a>--}}
@@ -102,6 +104,7 @@
                             <th>接班人</th>
                             <th>交班内容</th>
                             <th>交班时间</th>
+                            <th>接班时间</th>
                             @role('超级管理员')
                             <th>操作</th>
                             @endrole
