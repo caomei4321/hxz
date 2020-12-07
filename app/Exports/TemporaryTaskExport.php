@@ -41,11 +41,11 @@ class TemporaryTaskExport
         array_push($cellData, $firstRow);
 
         foreach ($commonTasks as $value) {
-            $createdAt = $value->created_at->toDateTimeString();
+            $createdAt = (String) $value->created_at->toDateTimeString();
             if ($value->status){
                 $updated_at = '';
             }else{
-                $updated_at = $value->updated_at->toDateTimeString();
+                $updated_at = (String) $value->updated_at->toDateTimeString();
             }
             $title = $value->title;
             $content = $value->content;
