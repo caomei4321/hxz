@@ -23,19 +23,12 @@ class TemporaryTaskExport
         $this->departmentId = $departmentId;
 
         $cellData = $this->createData();
-        //dd($cellData);
 
         $excel->create('临时任务记录导出', function ($excel) use ($cellData) {
             $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
-                //$sheet->row($cellData);
             });
         })->export('xls');
-    }
-
-    public function collection()
-    {
-        return collect($this->createData());
     }
 
     public function createData()
@@ -60,8 +53,7 @@ class TemporaryTaskExport
             $departments = '';
 
             $data = [
-                //$createdAt, $updated_at,
-                $title, $content, $users, $departments
+                $createdAt, $updated_at, $title, $content, $users, $departments
             ];
             // 拼接任务的所有人员和部门
             foreach ($value->users as $user) {
@@ -76,16 +68,5 @@ class TemporaryTaskExport
         }
 
         return $cellData;
-    }
-
-    /**
-     * @return array
-     */
-    public function columnFormats(): array
-    {
-        return [
-            'A' => NumberFormat::FORMAT_DATE_DATETIME, //日期
-            'B' => NumberFormat::FORMAT_DATE_DATETIME, //日期
-        ];
     }
 }
