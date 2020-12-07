@@ -8,7 +8,7 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel;
 
 class TemporaryProcessesController extends Controller
 {
@@ -57,12 +57,12 @@ class TemporaryProcessesController extends Controller
         ]);
     }
 
-    public function export(Request $request)
+    public function export(Request $request, Excel $excel)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
-        return Excel::download(new TemporaryProcessesExport($startTime, $endTime, $departmentId), '临时任务处理记录导出.xls');
+        new TemporaryProcessesExport($startTime, $endTime, $departmentId, $excel);
     }
 }

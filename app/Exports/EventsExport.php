@@ -2,28 +2,28 @@
 namespace App\Exports;
 
 use App\Models\Event;
-use Illuminate\Support\Collection;
+/*use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;*/
 
-class EventsExport implements FromCollection, ShouldAutoSize
+class EventsExport
 {
     private $startTime;
     private $endTime;
     private $departmentId;
-    public function __construct($startTime, $endTime, $departmentId)
+    public function __construct($startTime, $endTime, $departmentId, $excel)
     {
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->departmentId = $departmentId;
-    }
 
-    /**
-     * @return Collection
-     */
-    public function collection()
-    {
-        return collect($this->createData());
+        $cellData = $this->createData();
+
+        $excel->create('上报记录导出', function ($excel) use ($cellData) {
+            $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
+                $sheet->rows($cellData);
+            });
+        })->export('xlsx');
     }
 
     private function createData()

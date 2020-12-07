@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel;
 
 class EventsController extends Controller
 {
@@ -75,12 +75,12 @@ class EventsController extends Controller
         ]);
     }
 
-    public function export(Request $request)
+    public function export(Request $request, Excel $excel)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
-        return Excel::download(new EventsExport($startTime, $endTime, $departmentId), '上报记录导出.xls');
+        new EventsExport($startTime, $endTime, $departmentId, $excel);
     }
 }

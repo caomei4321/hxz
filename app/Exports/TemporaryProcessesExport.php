@@ -3,24 +3,27 @@ namespace App\Exports;
 
 use App\Models\CommonProcess;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\FromCollection;
+//use Maatwebsite\Excel\Concerns\FromCollection;
 
-class TemporaryProcessesExport implements FromCollection
+class TemporaryProcessesExport
 {
     private $startTime;
     private $endTime;
     private $departmentId;
 
-    public function __construct($startTime, $endTime, $departmentId)
+    public function __construct($startTime, $endTime, $departmentId, $excel)
     {
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->departmentId = $departmentId;
-    }
 
-    public function collection()
-    {
-        return collect($this->createData());
+        $cellData = $this->createData();
+
+        $excel->create('临时任务处理记录导出', function ($excel) use ($cellData) {
+            $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
+                $sheet->rows($cellData);
+            });
+        })->export('xlsx');
     }
 
     public function createData()
