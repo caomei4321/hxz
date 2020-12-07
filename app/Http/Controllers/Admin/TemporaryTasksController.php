@@ -153,7 +153,7 @@ class TemporaryTasksController extends Controller
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
-        $departmentId =  $request->department_id ? $request->department_id : '';
+        $cellData =  $request->department_id ? $request->department_id : '';
 
         //dd($request);
 
