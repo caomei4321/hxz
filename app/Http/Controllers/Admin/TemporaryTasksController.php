@@ -157,7 +157,7 @@ class TemporaryTasksController extends Controller
 
         //dd($request);
 
-        /*$excel->create('临时任务记录导出', function ($excel) use ($cellData) {
+        $excel->create('临时任务记录导出', function ($excel) use ($cellData) {
             $excel->sheet('matter', function ($sheet) use ($cellData) {
 
                 $sheet->row([
@@ -166,7 +166,7 @@ class TemporaryTasksController extends Controller
                     ['33','44']
                 ]);
             });
-        })->export('xls');*/
+        })->export('xls');
          /*$excel->create('临时任务记录导出', function ($excel) use ($cellData) {
                 $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
                     $sheet->row([
@@ -177,7 +177,7 @@ class TemporaryTasksController extends Controller
                     //$sheet->row($cellData);
                 });
         })->export('xls');*/
-         new TemporaryTaskExport($startTime, $endTime, $departmentId, $excel);
+         //new TemporaryTaskExport($startTime, $endTime, $departmentId, $excel);
     }
 
 }
