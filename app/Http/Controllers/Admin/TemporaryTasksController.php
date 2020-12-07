@@ -153,18 +153,19 @@ class TemporaryTasksController extends Controller
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
-        $cellData =  $request->department_id ? $request->department_id : '';
+        $departmentId =  $request->department_id ? $request->department_id : '';
 
+        $cellData = [
+            ['什么','22'],
+            ['22','33'],
+            ['33','44']
+        ];
         //dd($request);
-
-        $excel->create('临时任务记录导出', function ($excel) use ($cellData) {
-            $excel->sheet('matter', function ($sheet) use ($cellData) {
-
-                $sheet->row([
-                    ['11','22'],
-                    ['22','33'],
-                    ['33','44']
-                ]);
+        $firstRow = ['姓名','发现问题数量','开始时间','结束时间', '时长(分钟)', '里程(KM)', '总时长(分钟)', '总里程(KM)'];
+        $excel->create('临时任务记录导出', function ($excel) use ($cellData,$firstRow) {
+            $excel->sheet('matter', function ($sheet) use ($cellData,$firstRow) {
+                $sheet->prependRow(1, $firstRow);
+                $sheet->row($cellData);
             });
         })->export('xls');
          /*$excel->create('临时任务记录导出', function ($excel) use ($cellData) {
