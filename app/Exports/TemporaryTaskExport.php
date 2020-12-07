@@ -36,7 +36,7 @@ class TemporaryTaskExport
         $commonTasks = CommonTask::whereBetween('created_at',[$this->startTime, $this->endTime])->where('category', '临时任务')->with('users.department')->get();
         $cellData = [];
 
-        $firstRow = ['下发时间', '处理完成时间', '任务标题', '任务内容', '执行人', '小区名称', '处理描述'];
+        $firstRow = ['任务标题', '任务内容', '执行人', '小区名称', '处理描述', '下发时间', '处理完成时间'];
 
         array_push($cellData, $firstRow);
 
@@ -53,7 +53,7 @@ class TemporaryTaskExport
             $departments = '';
 
             $data = [
-                $createdAt, $updated_at, $title, $content, $users, $departments
+                $title, $content, $users, $departments, $createdAt, $updated_at
             ];
             // 拼接任务的所有人员和部门
             foreach ($value->users as $user) {
