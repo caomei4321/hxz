@@ -27,7 +27,7 @@ class TemporaryTaskExport
 
         $excel->create('临时任务记录导出', function ($excel) use ($cellData) {
             $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
-                $sheet->row($cellData);
+                $sheet->rows($cellData);
                 //$sheet->row($cellData);
             });
         })->export('xls');
