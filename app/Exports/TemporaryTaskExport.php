@@ -28,7 +28,7 @@ class TemporaryTaskExport
             $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
             });
-        })->export('xls');
+        })->export('xlsx');
     }
 
     public function createData()
@@ -36,7 +36,7 @@ class TemporaryTaskExport
         $commonTasks = CommonTask::whereBetween('created_at',[$this->startTime, $this->endTime])->where('category', '临时任务')->with('users.department')->get();
         $cellData = [];
 
-        $firstRow = ['任务标题', '任务内容', '执行人', '小区名称', '处理描述', '下发时间', '处理完成时间'];
+        $firstRow = ['下发时间', '处理完成时间', '任务标题', '任务内容', '执行人', '小区名称', '处理描述'];
 
         array_push($cellData, $firstRow);
 
@@ -53,7 +53,7 @@ class TemporaryTaskExport
             $departments = '';
 
             $data = [
-                $title, $content, $users, $departments, $createdAt, $updated_at
+                $createdAt, $updated_at, $title, $content, $users, $departments
             ];
             // 拼接任务的所有人员和部门
             foreach ($value->users as $user) {
