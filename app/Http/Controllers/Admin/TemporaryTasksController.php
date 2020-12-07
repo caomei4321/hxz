@@ -11,8 +11,8 @@ use App\Models\UserCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Excel;
 
 class TemporaryTasksController extends Controller
 {
@@ -149,14 +149,35 @@ class TemporaryTasksController extends Controller
             'status' => 200
         ]);
     }
-    public function export(Request $request)
+    public function export(Request $request, Excel $excel)
     {
         $startTime = $request->start_time ? $request->start_time : date('Y-m-d', time());
         $endTime = $request->end_time ? $request->end_time : date('Y-m-d', strtotime("+1 day"));
         $departmentId =  $request->department_id ? $request->department_id : '';
 
+        //dd($request);
 
-        return Excel::download(new TemporaryTaskExport($startTime, $endTime, $departmentId), '临时任务记录导出.xls');
+        /*$excel->create('临时任务记录导出', function ($excel) use ($cellData) {
+            $excel->sheet('matter', function ($sheet) use ($cellData) {
+
+                $sheet->row([
+                    ['11','22'],
+                    ['22','33'],
+                    ['33','44']
+                ]);
+            });
+        })->export('xls');*/
+         /*$excel->create('临时任务记录导出', function ($excel) use ($cellData) {
+                $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
+                    $sheet->row([
+                        ['11','22'],
+                        ['22','33'],
+                        ['33','44']
+                    ]);
+                    //$sheet->row($cellData);
+                });
+        })->export('xls');*/
+         new TemporaryTaskExport($startTime, $endTime, $departmentId, $excel);
     }
 
 }

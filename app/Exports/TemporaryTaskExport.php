@@ -3,22 +3,34 @@ namespace App\Exports;
 
 use App\Models\CommonTask;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Excel;
+
+/*use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;*/
 
-class TemporaryTaskExport implements FromCollection, ShouldAutoSize, WithColumnFormatting
+class TemporaryTaskExport
 {
     private $startTime;
     private $endTime;
     private $departmentId;
 
-    public function __construct($startTime, $endTime, $departmentId)
+    public function __construct($startTime, $endTime, $departmentId, $excel)
     {
         $this->startTime = $startTime;
         $this->endTime = $endTime;
         $this->departmentId = $departmentId;
+
+        $cellData = $this->createData();
+        //dd($cellData);
+
+        $excel->create('临时任务记录导出', function ($excel) use ($cellData) {
+            $excel->sheet('temporaryTask', function ($sheet) use ($cellData) {
+                $sheet->row($cellData);
+                //$sheet->row($cellData);
+            });
+        })->export('xls');
     }
 
     public function collection()
@@ -48,7 +60,8 @@ class TemporaryTaskExport implements FromCollection, ShouldAutoSize, WithColumnF
             $departments = '';
 
             $data = [
-                $createdAt, $updated_at, $title, $content, $users, $departments
+                //$createdAt, $updated_at,
+                $title, $content, $users, $departments
             ];
             // 拼接任务的所有人员和部门
             foreach ($value->users as $user) {
