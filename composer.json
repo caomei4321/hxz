@@ -18,7 +18,7 @@
         "overtrue/laravel-wechat": "~4.0",
         "phpoffice/phpword": "^0.17.0",
         "spatie/laravel-permission": "^2.37",
-        "tymon/jwt-auth": "1.0.*"
+        "tymon/jwt-auth": "1.0.0-rc.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
