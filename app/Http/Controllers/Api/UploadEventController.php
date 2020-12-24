@@ -34,7 +34,11 @@ class UploadEventController extends Controller
     {
         $eventId = $request->id;
 
-        $eventDetail = Event::where('id', $eventId)->with('replies')->get();
+        $eventDetail = Event::where('id', $eventId)->with(['adminReplies' => function ($query) {
+                                                $query->where('event_reply_id', null);
+                                            },'replies' => function ($query) {
+                                                $query->with('adminReplies');
+                                            }])->get();
 
         return $this->message($eventDetail);
     }

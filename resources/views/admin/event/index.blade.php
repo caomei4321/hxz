@@ -68,7 +68,8 @@
                             <th>上报人</th>
                             <th>事件描述</th>
                             <th>状态</th>
-                            <th>最新回复</th>
+                            <th>后续上报</th>
+                            <th>事件响应</th>
                             <th>上报时间</th>
                             <th>操作</th>
                         </tr>
@@ -88,10 +89,12 @@
                                 <td>自主处理完成</td>
                             @endif
                             <td>{{ isset($event->replies[0]->reply) ? $event->replies[0]->reply : '' }}</td>
+                            <td>{{ isset($event->adminReplies[0]->reply) ? $event->adminReplies[0]->reply : '' }}</td>
                             <td>{{ $event->created_at }}</td>
                             <td class="center">
                                 <a href="{{ route('admin.event.show', ['event' => $event->id]) }}"><button type="button" class="btn btn-danger btn-xs">查看</button></a>
                                 @role('超级管理员')
+                                <button class="btn btn-primary btn-xs reply" data-id="{{ $event->id }}">添加响应</button>
                                 <button class="btn btn-warning btn-xs delete" data-id="{{ $event->id }}">删除</button>
                                 @endrole
                             </td>
@@ -105,7 +108,8 @@
                             <th>上报人</th>
                             <th>事件描述</th>
                             <th>状态</th>
-                            <th>最新回复</th>
+                            <th>后续上报</th>
+                            <th>事件响应</th>
                             <th>上报时间</th>
                             <th>操作</th>
                         </tr>
@@ -124,7 +128,8 @@
     <script src="{{ asset('assets/admin/js/plugins/dataTables/dataTables.bootstrap.js') }}"></script>
 
     <!-- Sweet alert -->
-    <script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    {{--<script src="{{ asset('assets/admin/js/plugins/sweetalert/sweetalert.min.js') }}"></script>--}}
+    <script src="{{ asset('assets/admin/js/plugins/sweet/sweetalert.min.js') }}"></script>
     <!-- Data picker -->
     <script src="{{ asset('assets/admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
     <!-- Chosen -->
@@ -161,6 +166,39 @@
                 });
                 $.ajax();
             });
+        });
+        $('.reply').click(function () {
+            var id = $(this).data('id');
+            swal({
+                text: '添加响应',
+                content: 'input',
+                button: {
+                    text: "添加",
+                    closeModal: true
+                },
+            }).then((reply) => {
+                if (!reply) {
+                    throw null;
+                }
+                $.ajaxSetup({
+                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type:"post",
+                    url: '/admin/events/reply/'+id,
+                    data: {
+                        'reply' : reply
+                    },
+                    success:function (res) {
+                        if (res.status == 200){
+                            swal(res.message, "回复成功。", "success");
+                            location.reload()
+                            //location.reload();
+                        }else {
+                            swal(res.message, "请稍后重试。", "warning");
+                        }
+                    },
+                });
+                $.ajax();
+            })
         });
         $('#datepicker').datepicker();
         $('#dc').datepicker();

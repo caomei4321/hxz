@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\EventsExport;
 use App\Models\Department;
 use App\Models\Event;
+use App\Models\EventReply;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,10 @@ class EventsController extends Controller
         }
 
         $events = $events->with(['replies' => function($query) {
-            $query->orderBy('created_at', 'desc');
-        }])->orderBy('id', 'desc')->paginate(15);
+                                    $query->orderBy('created_at', 'desc');
+                                }, 'adminReplies' => function($query) {
+                                    $query->orderBy('created_at', 'desc');
+                                }])->orderBy('id', 'desc')->paginate(15);
 
         $departments = $department->all();
         $filter = [
@@ -82,5 +85,24 @@ class EventsController extends Controller
         $departmentId =  $request->department_id ? $request->department_id : '';
 
         new EventsExport($startTime, $endTime, $departmentId, $excel);
+    }
+
+    public function reply(Request $request, Event $event, EventReply $eventReply)
+    {
+        if (count($event->replies()->get()) == 0) {
+            $event->adminReplies()->create([
+                'reply' => $request->reply
+            ]);
+        } else {
+            $lastReply = $eventReply::where('event_id', $event->id)->orderBy('id', 'desc')->limit(1)->get();
+            $event->adminReplies()->create([
+                'event_reply_id' => $lastReply[0]->id,
+                'reply' => $request->reply
+            ]);
+        }
+        return response()->json([
+            'status'=> 200,
+            'message' => '添加成功'
+        ]);
     }
 }

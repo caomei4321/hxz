@@ -197,6 +197,7 @@ Route::group(['prefix' => 'admin'], function () {
                     'destroy' => 'admin.event.destroy',
                     'create' => 'admin.event.create'
                 ]);
+                Route::post('events/reply/{event}', 'Admin\EventsController@reply')->name('admin.event.reply');
                 Route::get('events/export/excel', 'Admin\EventsController@export')->name('admin.event.export'); // 导出
 
                 // 交班记录

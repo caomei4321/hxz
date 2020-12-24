@@ -19,4 +19,9 @@ class Event extends Model
     {
         return $this->hasMany(EventReply::class);
     }
+
+    public function adminReplies()
+    {
+        return $this->hasMany(EventAdminReply::class);
+    }
 }
