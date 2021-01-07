@@ -105,4 +105,8 @@ class EventsController extends Controller
             'message' => '添加成功'
         ]);
     }
+
+    public function eventCount() {
+        return Event::query()->count();
+    }
 }

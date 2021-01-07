@@ -190,6 +190,7 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::delete('specialTasks/{commonTask}', 'Admin\SpecialTasksController@destroy')->name('admin.specialTask.destroy');
 
                 // 上报记录
+                Route::get('events/count', 'Admin\EventsController@eventCount')->name('admin.event.eventCount');
                 Route::resource('events', 'Admin\EventsController', ['except' => ['edit', 'update']])->names([
                     'index' => 'admin.event.index',
                     'store' => 'admin.event.store',

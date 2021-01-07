@@ -21,6 +21,8 @@
     <link href="{{ asset('assets/admin/css/font-awesome.min.css?v=4.4.0') }}" rel="stylesheet">
     <link href="{{ asset('assets/admin/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/admin/css/style.css?v=4.1.0') }}" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="{{ asset('assets/admin/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
 
     @yield('styles')
 </head>
@@ -88,12 +90,34 @@
 <script src="{{ asset('assets/admin/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/plugins/layer/layer.min.js') }}"></script>
+<!-- Sweet alert -->
+<script src="{{ asset('assets/admin/js/plugins/sweet/sweetalert.min.js') }}"></script>
 
 @yield('scripts')
 
 <!-- 自定义js -->
 <script src="{{ asset('assets/admin/js/hplus.js?v=4.1.0') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/admin/js/contabs.js') }}"></script>
+<script>
+    setInterval(function() {
+        $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: "get",
+            url: '/admin/events/count',
+            success: function (res) {
+                if (!window.localStorage.getItem('eventCount')) {
+                    window.localStorage.setItem('eventCount', res);
+                } else if (window.localStorage.getItem('eventCount') < res) {
+                    window.localStorage.setItem('eventCount', res);
+                    swal({
+                        text: '有新的上报事件'
+                    })
+                }
+            },
+        });
+        $.ajax();
+    },120000);
+</script>
 
 </body>
 
