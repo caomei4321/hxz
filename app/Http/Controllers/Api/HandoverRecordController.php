@@ -53,7 +53,8 @@ class HandoverRecordController extends Controller
         ]);
         $job = new SendMessage($request->recipient_user, 'FLIa3sZqChPa9T2rj4xu7OeYNNT_-3vpSBiTIiJ__t8', 'pages/basics/shift', [
             'title' => '交接信息',
-            'content' => $request->description
+            //'content' => $request->description
+            'content' => '进入小程序查看详细内容'
         ]);
         dispatch($job);
 

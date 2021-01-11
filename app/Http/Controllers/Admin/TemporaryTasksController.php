@@ -102,7 +102,8 @@ class TemporaryTasksController extends Controller
                     'value' => $data['title']
                 ],
                 'thing5' => [
-                    'value' => $data['content']
+                    //'value' => $data['content']
+                    'value' => '进入小程序查看详细内容'
                 ]
             ]);
             dispatch($job);
