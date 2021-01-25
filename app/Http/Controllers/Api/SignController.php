@@ -27,6 +27,22 @@ class SignController extends Controller
     {
         $user = Auth()->guard('api')->user();
 
+        if ($user->sign_type == 1) {
+            $signIn = Sign::where([
+                ['user_id', $user->id],
+                ['type', 1]
+            ])->orderBy('created_at', 'desc')->limit(1)->get();
+            $user['sign_in_time'] = $signIn[0]['sing_at'];
+            $user['sign_in_msg'] = '打卡成功';
+            $user['sign_out_time'] = '';
+            $user['sign_out_msg'] = '暂无打卡';
+        } else {
+            $user['sign_in_time'] = '';
+            $user['sign_in_msg'] = '暂无打卡';
+            $user['sign_out_time'] = '';
+            $user['sign_out_msg'] = '暂无打卡';
+        }
+
         return $this->message($user);
     }
 }
