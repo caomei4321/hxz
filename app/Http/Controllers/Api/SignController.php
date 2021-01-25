@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Sign;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SignController extends Controller
@@ -32,7 +33,7 @@ class SignController extends Controller
                 ['user_id', $user->id],
                 ['type', 1]
             ])->orderBy('created_at', 'desc')->limit(1)->get();
-            $user['sign_in_time'] = $signIn[0]['sing_at'];
+            $user['sign_in_time'] = $signIn[0]->created_at->toDateTimeString();
             $user['sign_in_msg'] = '打卡成功';
             $user['sign_out_time'] = '';
             $user['sign_out_msg'] = '暂无打卡';
